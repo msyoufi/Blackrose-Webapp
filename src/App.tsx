@@ -1,13 +1,19 @@
 import { Outlet } from "react-router"
+import { ConfirmationDialogProvider } from "./shared/components/confirmation-dialog";
+import { SnackbarProvider } from "./shared/components/snackbar";
 
 export default function App() {
   return (
-    <>
-      <header></header>
+    <ConfirmationDialogProvider>
+      <SnackbarProvider>
 
-      <main>
-        <Outlet />
-      </main>
-    </>
-  )
+        <header></header>
+
+        <main>
+          <Outlet />
+        </main>
+
+      </SnackbarProvider>
+    </ConfirmationDialogProvider>
+  );
 }
