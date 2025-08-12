@@ -1,0 +1,42 @@
+:root {
+  --white: #f4f4f4;
+  --black: #161617;
+  --gray: #5c6774;
+  --green: #228f75;
+  --red: #D42841;
+  --border-color: #e6deee;
+  --shadow: #16151f1e 0px 1px 0px, #16151f1e 0px 8px 24px, #16151f1e 0px 16px 48px;
+  --radius: 7px;
+  --transition: .15s;
+  --app-width: 1300px;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue';
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: var(--app-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+  overflow-y: hidden;
+}
+
+main {
+  flex: 1;
+  padding-bottom: 5rem;
+}
