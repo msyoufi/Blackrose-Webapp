@@ -7,3 +7,11 @@ interface SnackbarContext {
 };
 
 type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+
+interface ConfirmationDialogContext {
+  ask: (
+    title: string,
+    content: string,
+    action: string
+  ) => Promise<boolean>
+}
