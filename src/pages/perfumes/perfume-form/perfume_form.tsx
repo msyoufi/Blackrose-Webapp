@@ -1,10 +1,10 @@
 import { type ChangeEvent, createContext, type FormEvent, type ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { MenuItem, TextField, Button, Switch, FormControlLabel } from '@mui/material';
+import { MenuItem, TextField, Button, Switch, FormControlLabel, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { FragranceConcentrations, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.service';
-import './perfume_form.scss';
 import { uploadImage } from '../../../shared/services/images.service';
+import './perfume_form.scss';
 
 const PerfumeFormContext = createContext<PerfumeFormContext | null>(null);
 
@@ -19,6 +19,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState<Perfume | PerfumeFormData>(NewPerfume);
   const [imgFile, setImgFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -36,7 +37,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
     }
 
     if (type === 'number') {
-      value = valueAsNumber;
+      value = Number.isNaN(valueAsNumber) ? '' : valueAsNumber;
     }
 
     if (type === 'file') {
@@ -67,6 +68,8 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       ? new Date().getTime().toString()
       : formData.id as string;
 
+    setIsLoading(true);
+
     try {
       if (imgFile) {
         formData.image_url = await uploadImage(imgFile, perfumeId);
@@ -84,8 +87,10 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       close();
 
     } catch (err: unknown) {
-      console.log(err)
       snackbar.show('Unable to save the perfume to the database!', 'error', 5000);
+
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -114,10 +119,10 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
         >
           <div className="form-header">
             <p>
-              {formMode === 'add' ? 'Add New Perfume' : `Edit ${name} - ${brand}`}
+              {formMode === 'add' ? 'New Perfume' : name}
             </p>
 
-            <Button type='reset' onClick={close}>
+            <Button type='reset' onClick={close} disabled={isLoading}>
               X
             </Button>
           </div>
@@ -234,11 +239,11 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
           </div>
 
           <div className="buttons-bar">
-            <Button type='submit' disabled={!formRef.current?.checkValidity()}>
-              Save
+            <Button type='submit' disabled={!formRef.current?.checkValidity() || isLoading}>
+              {isLoading ? <CircularProgress size={20} /> : 'Save'}
             </Button>
 
-            <Button type='reset' onClick={close}>
+            <Button type='reset' onClick={close} disabled={isLoading}>
               Cancle
             </Button>
           </div>

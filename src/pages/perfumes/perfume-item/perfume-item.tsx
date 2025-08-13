@@ -16,8 +16,8 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
   async function handleRemove(): Promise<void> {
     const confirm = await confirmDialog.ask(
-      `Remove ${name}`,
-      `Remove ${name} - ${brand} permanently?`,
+      'Remove Perfume',
+      `Remove ${name} - ${brand}?`,
       'Remove'
     );
 
@@ -38,7 +38,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
   async function handleImageDelete(): Promise<void> {
     const confirm = await confirmDialog.ask(
-      `Remove Image`,
+      'Remove Image',
       `Remove the image for ${name}?`,
       'Remove'
     );
@@ -60,25 +60,22 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
   return (
     <div className={'perfume-item' + (in_stock ? '' : ' out-of-stock')}>
-      <div className="perfume-image-box">
-        <img src={image_url
-          ? image_url
-          : 'images/perfume-icon.png'
+      {image_url && <button
+        className='img-remove-button'
+        onClick={handleImageDelete}
+      >
+        X
+      </button>}
+
+      <img className='perfume-image' src={image_url
+        ? image_url
+        : 'images/perfume-icon.png'
+      }
+        alt={image_url
+          ? 'Image of the perfume ' + name + ' by ' + brand
+          : 'Genereic perfume image'
         }
-          alt={image_url
-            ? 'Image of the perfume ' + name + ' by ' + brand
-            : 'Genereic perfume image'
-          }
-        />
-
-        {image_url && <button
-          className='img-remove-button'
-          onClick={handleImageDelete}
-        >
-          X
-        </button>}
-      </div>
-
+      />
 
       <div className="perfume-infos-box">
         <p>ID: {id}</p>

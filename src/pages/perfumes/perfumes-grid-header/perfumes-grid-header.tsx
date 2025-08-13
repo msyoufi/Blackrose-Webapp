@@ -15,14 +15,14 @@ export default function PerfumesGridHeader({
   setPerfumes: (perfumes: Perfume[]) => void,
 }) {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [lastSortingKey, setLastSortingKey] = useState<keyof Perfume>('name');
+  const [sortingKey, setSortingKey] = useState<keyof Perfume>('name');
   const [reversed, setReversed] = useState(false);
 
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
   useEffect(() => {
-    const sorted = sortByKey(initialPerfumes, lastSortingKey, reversed);
+    const sorted = sortByKey(initialPerfumes, sortingKey, reversed);
     setPerfumes(sorted);
 
   }, [initialPerfumes]);
@@ -42,12 +42,12 @@ export default function PerfumesGridHeader({
   }
 
   function handleSort(key: keyof Perfume): void {
-    const nextReversed = lastSortingKey === key && !reversed;
+    const nextReversed = sortingKey === key && !reversed;
     const sorted = sortByKey(perfumes, key, nextReversed);
 
     setPerfumes(sorted);
     setReversed(nextReversed);
-    setLastSortingKey(key);
+    setSortingKey(key);
   }
 
   async function createPDF(): Promise<void> {
@@ -73,7 +73,7 @@ export default function PerfumesGridHeader({
       </div>
 
       <div className="search-filter-wrapper">
-        <TextField type='search' size='small' placeholder='Search'
+        <TextField type='search' size='small' placeholder='Search Name or Brand'
           value={searchValue}
           onInput={handleSearch}
         />
@@ -83,7 +83,10 @@ export default function PerfumesGridHeader({
           <p>Sort By:</p>
 
           {sortingKeys.map(key =>
-            <a key={key} onClick={() => handleSort(key)}>
+            <a
+              className={key === sortingKey ? 'selected' : ''}
+              key={key}
+              onClick={() => handleSort(key)}>
               {capitalize(key)}
             </a>
           )}
