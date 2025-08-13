@@ -8,12 +8,21 @@ export default function PerfumesGrid() {
   const initialPerfumes = useLoaderData<Perfume[]>();
   const [perfumes, setPerfumes] = useState<Perfume[]>(initialPerfumes);
 
+  function removePerfumeLocaly(id: number): void {
+    const nextPerfumes = perfumes.filter(p => p.id !== id);
+    setPerfumes(nextPerfumes);
+  }
+
   return (
     <div>
       <PerfumesGridHeader />
 
       {perfumes.map(p =>
-        <PerfumeItem perfume={p} />
+        <PerfumeItem
+          key={p.id}
+          perfume={p}
+          removePerfumeLocaly={removePerfumeLocaly}
+        />
       )}
     </div>
   );
