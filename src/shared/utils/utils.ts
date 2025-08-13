@@ -41,3 +41,9 @@ export function search<T, K extends keyof T>(
 export function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
+
+export function formatCurrency(value: number): string {
+  return value >= 1000
+    ? `${(value / 1000).toFixed(2)}M`
+    : `${value}K`;
+}

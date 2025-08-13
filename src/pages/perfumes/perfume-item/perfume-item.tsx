@@ -3,11 +3,13 @@ import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.s
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
-import './perfume-item.scss';
 import { deleteImage } from '../../../shared/services/images.service';
+import './perfume-item.scss';
+import { formatCurrency } from '../../../shared/utils/utils';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
+
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
@@ -80,8 +82,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
         <p>ID: {id}</p>
         <p>{name} - {brand}</p>
         <p>{concentration} - {sex}</p>
-        {/* TODO: set the price unit */}
-        <p>{size} ml | {price} USh</p>
+        <p>{size} ml | {formatCurrency(price)} USh</p>
       </div>
 
       <div className="perfume-buttons-box">
