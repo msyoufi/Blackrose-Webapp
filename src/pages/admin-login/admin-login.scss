@@ -1,0 +1,26 @@
+#auth_form {
+  max-width: 500px;
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.auth-buttons-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+
+  button {
+    width: 100%;
+  }
+}
+
+@media(max-width:850px) {
+  .auth-buttons-container {
+    flex-direction: column;
+  }
+}
