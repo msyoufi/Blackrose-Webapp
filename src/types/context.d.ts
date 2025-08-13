@@ -1,22 +1,33 @@
-interface SnackbarContext {
-  show: (
-    content: string,
-    severity?: SnackbarSeverity,
-    duration?: number
-  ) => void
-};
+import type { User } from "firebase/auth";
 
-type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+declare global {
 
-interface ConfirmationDialogContext {
-  ask: (
-    title: string,
-    content: string,
-    action: string
-  ) => Promise<boolean>
-}
+  interface SnackbarContext {
+    show: (
+      content: string,
+      severity?: SnackbarSeverity,
+      duration?: number
+    ) => void
+  };
 
-interface PerfumeFormContext {
-  open: (perfume?: Perfume) => void,
-  close: () => void
+  type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+
+  interface ConfirmationDialogContext {
+    ask: (
+      title: string,
+      content: string,
+      action: string
+    ) => Promise<boolean>
+  }
+
+  interface PerfumeFormContext {
+    open: (perfume?: Perfume) => void,
+    close: () => void
+  }
+
+  interface AuthContext {
+    user: User | null;
+    loading: boolean;
+  };
+
 }
