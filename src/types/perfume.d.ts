@@ -3,7 +3,7 @@ interface Perfume {
   brand: string,
   name: string,
   sex: PerfumeSex,
-  type: string,
+  type: PerfumeType,
   size: number,
   price: number,
   in_stock: boolean,
