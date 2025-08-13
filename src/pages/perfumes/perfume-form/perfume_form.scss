@@ -1,0 +1,38 @@
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  padding: 1.5rem 0;
+  row-gap: 1rem;
+}
+
+.buttons-bar button {
+  float: right;
+}
+
+.image-input-label {
+  display: flex;
+  width: 100%;
+  min-height: 350px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #c2c2c2;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.image-input-label:hover {
+  border-color: var(--black);
+}
+
+.perfume-image {
+  max-height: 350px;
+  object-fit: cover;
+}

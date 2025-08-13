@@ -15,3 +15,8 @@ interface ConfirmationDialogContext {
     action: string
   ) => Promise<boolean>
 }
+
+interface PerfumeFormContext {
+  open: (perfume?: Perfume) => void,
+  close: () => void
+}

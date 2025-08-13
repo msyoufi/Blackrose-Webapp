@@ -1,7 +1,8 @@
 import { useConfirmationDialog } from '../../../shared/components/confirmation-dialog';
-import { deletePerfume } from '../../../shared/components/services/perfume.service';
+import { deletePerfume } from '../../../shared/services/perfume.service';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button } from '@mui/material';
+import { usePerfumeForm } from '../perfume-form/perfume_form';
 import './perfume-item.scss';
 
 export default function PerfumeItem({
@@ -11,8 +12,9 @@ export default function PerfumeItem({
   perfume: Perfume,
   removePerfumeLocaly: (id: number) => void
 }) {
-  const { id, brand, name, sex, size, price, type, image_url, in_stock } = perfume;
+  const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
   const confirmDialog = useConfirmationDialog();
+  const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
   async function handleRemove(): Promise<void> {
@@ -49,7 +51,7 @@ export default function PerfumeItem({
       <div className="perfume-infos-box">
         <p>ID: {id}</p>
         <p>{name} - {brand}</p>
-        <p>{type} - {sex}</p>
+        <p>{concentration} - {sex}</p>
         {/* TODO: set the price unit */}
         <p>{size} ml | {price} USh</p>
       </div>
@@ -58,6 +60,7 @@ export default function PerfumeItem({
         <Button
           size='small'
           variant='outlined'
+          onClick={() => perfumeForm.open(perfume)}
         >
           Edit
         </Button>
