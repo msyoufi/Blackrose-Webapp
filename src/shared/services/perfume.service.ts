@@ -1,13 +1,15 @@
 import { db } from '../../firebase';
-import { collection, deleteDoc, doc, onSnapshot, query, setDoc, updateDoc, type DocumentReference } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, updateDoc, type DocumentReference } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
+import { useSnackbar } from '../components/snackbar';
 
 export function usePerfumes(): Perfume[] {
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     try {
-      const q = query(collection(db, 'perfumes'));
+      const q = query(collection(db, 'perfumes'), orderBy('name'));
 
       const unsubscribe = onSnapshot(q, querySnapshot => {
         const nextPerfumes: Perfume[] = [];
@@ -18,7 +20,7 @@ export function usePerfumes(): Perfume[] {
       return unsubscribe;
 
     } catch (err: unknown) {
-      console.log(err);
+      snackbar.show('Unable to load the Perfumes!', 'error');
     }
   }, []);
 

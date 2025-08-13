@@ -1,58 +1,33 @@
-import { type ChangeEvent, useEffect, useState } from 'react';
+import { type ChangeEvent } from 'react';
 import { Button, TextField } from '@mui/material';
-import { matchString, sortByKey, capitalize } from '../../../shared/utils/utils';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
-  perfumes,
-  initialPerfumes,
-  setPerfumes
+  allPerfumes,
+  searchValue,
+  setSearchValue,
+  setPage
 }: {
-  perfumes: Perfume[],
-  initialPerfumes: Perfume[],
-  setPerfumes: (perfumes: Perfume[]) => void,
+  allPerfumes: Perfume[],
+  searchValue: string,
+  setSearchValue: (val: string) => void,
+  setPage: (val: number) => void,
 }) {
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [sortingKey, setSortingKey] = useState<keyof Perfume>('name');
-  const [reversed, setReversed] = useState(false);
-
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
-  useEffect(() => {
-    const sorted = sortByKey(initialPerfumes, sortingKey, reversed);
-    setPerfumes(sorted);
-
-  }, [initialPerfumes]);
-
   function handleSearch(e: ChangeEvent<HTMLInputElement>): void {
-    const query = e.target.value
+    const query = e.target.value;
     setSearchValue(query);
-
-    if (!query)
-      return setPerfumes(initialPerfumes);
-
-    const found = perfumes.filter(({ brand, name }) =>
-      matchString(brand, query) || matchString(name, query)
-    );
-
-    setPerfumes(found);
-  }
-
-  function handleSort(key: keyof Perfume): void {
-    const nextReversed = sortingKey === key && !reversed;
-    const sorted = sortByKey(perfumes, key, nextReversed);
-
-    setPerfumes(sorted);
-    setReversed(nextReversed);
-    setSortingKey(key);
+    setPage(1);
   }
 
   async function createPDF(): Promise<void> {
     try {
       // TODO
+      console.log('PDF for: ', allPerfumes);
       snackbar.show('PDF created successfully');
 
     } catch (err: unknown) {
@@ -78,22 +53,8 @@ export default function PerfumesGridHeader({
           onInput={handleSearch}
         />
 
-        <div className="sort-box">
-          <p>Total: {perfumes.length} |</p>
-          <p>Sort By:</p>
-
-          {sortingKeys.map(key =>
-            <a
-              className={key === sortingKey ? 'selected' : ''}
-              key={key}
-              onClick={() => handleSort(key)}>
-              {capitalize(key)}
-            </a>
-          )}
-        </div>
+        <p>Total: {allPerfumes.length}</p>
       </div>
     </div>
   );
 }
-
-const sortingKeys: (keyof Perfume)[] = ['name', 'sex'];
