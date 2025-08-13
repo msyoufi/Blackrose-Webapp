@@ -25,9 +25,8 @@ export function usePerfumes(): Perfume[] {
   return perfumes;
 }
 
-export async function createPerfume(perfume: NewPerfume): Promise<void> {
-  const id = new Date().getTime().toString();
-  await setDoc(getDocRef(id), perfume);
+export async function createPerfume(newId: string, perfume: NewPerfume): Promise<void> {
+  await setDoc(getDocRef(newId), perfume);
 }
 
 export async function updatePerfume(perfume: Perfume): Promise<void> {

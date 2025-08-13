@@ -4,6 +4,7 @@ import { useSnackbar } from '../../../shared/components/snackbar';
 import { FragranceConcentrations, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.service';
 import './perfume_form.scss';
+import { uploadImage } from '../../../shared/services/images.service';
 
 const PerfumeFormContext = createContext<PerfumeFormContext | null>(null);
 
@@ -17,12 +18,14 @@ export function usePerfumeForm(): PerfumeFormContext {
 export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState<Perfume | PerfumeFormData>(NewPerfume);
+  const [imgFile, setImgFile] = useState<File | null>(null);
+
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, sex, concentration, fragrance_type, size, price, in_stock, image_url } = formData;
+  const { id, brand, name, sex, concentration, fragrance_type, size, price, in_stock } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -36,35 +39,42 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       value = valueAsNumber;
     }
 
-
-    // TODO: update the image
-    // if (type === 'file') {
-    //   value = getImageFile(e);
-    //   if (!value) return;
-    // }
+    if (type === 'file') {
+      const file = getImageFile(e);
+      return setImgFile(file);
+    }
 
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
-  // function getImageFile(e: any): File | null {
-  //   const file = e.target.files[0] as File | undefined;
-  //   if (!file) return null;
+  function getImageFile(e: any): File | null {
+    const file = e.target.files[0] as File | undefined;
+    if (!file) return null;
 
-  //   if (!file.type.startsWith('image/')) {
-  //     snackbar.show('Please select an image file!', 'error');
-  //     return null;
-  //   }
+    if (!file.type.startsWith('image/')) {
+      snackbar.show('Please select an image file!', 'error');
+      return null;
+    }
 
-  //   return file;
-  // }
+    return file;
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     let message = 'Changes Saved';
 
+    let perfumeId = formMode === 'add'
+      ? new Date().getTime().toString()
+      : formData.id as string;
+
     try {
+      if (imgFile) {
+        formData.image_url = await uploadImage(imgFile, perfumeId);
+        console.log('image uploaded with url: ', formData.image_url);
+      }
+
       if (formMode === 'add') {
-        await createPerfume(formData as NewPerfume);
+        await createPerfume(perfumeId, formData as NewPerfume);
         message = 'New perfume added';
 
       } else {
@@ -89,6 +99,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
   const close = useCallback(() => {
     setFormOpen(false);
+    setImgFile(null);
   }, []);
 
   const contextValue = useMemo(() => ({ open, close }), [open, close]);
@@ -193,7 +204,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               size='small'
               value={fragrance_type}
             />
-
 
             <FormControlLabel
               label="Image"
