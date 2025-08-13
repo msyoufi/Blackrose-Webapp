@@ -1,0 +1,44 @@
+.perfumes-grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+  gap: .5rem;
+
+  .header-buttons-box {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 10rem;
+    gap: .5rem;
+  }
+}
+
+.search-filter-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-box,
+.filters-box {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  .MuiFormControl-root {
+    width: 8rem;
+  }
+}
+
+.search-box {
+  gap: 1rem;
+
+  .MuiFormControl-root {
+    width: 17.6rem;
+  }
+}
+
+.filters-box {
+  padding-left: 1rem;
+}

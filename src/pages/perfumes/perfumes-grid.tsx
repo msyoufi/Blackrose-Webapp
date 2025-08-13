@@ -12,7 +12,12 @@ export default function PerfumesGrid() {
 
   return (
     <div>
-      <PerfumesGridHeader />
+      <PerfumesGridHeader
+        perfumes={displayPerfumes}
+        initialPerfumes={initialPerfumes}
+        setPerfumes={setDisplayPerfumes}
+      />
+
       {displayPerfumes.length
 
         ? <div className="perfumes-grid">
