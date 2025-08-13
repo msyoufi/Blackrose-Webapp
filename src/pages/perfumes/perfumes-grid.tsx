@@ -10,25 +10,22 @@ export default function PerfumesGrid() {
 
   useEffect(() => setDisplayPerfumes(initialPerfumes), [initialPerfumes]);
 
-  function removePerfumeLocaly(id: number): void {
-    const nextPerfumes = displayPerfumes.filter(p => p.id !== id);
-    setDisplayPerfumes(nextPerfumes);
-  }
-
   return (
     <div>
       <PerfumesGridHeader />
+      {displayPerfumes.length
 
-      <div className="perfumes-grid">
-        {displayPerfumes.map(p =>
-          <PerfumeItem
-            key={p.id}
-            perfume={p}
-            removePerfumeLocaly={removePerfumeLocaly}
-          />
-        )}
-      </div>
+        ? <div className="perfumes-grid">
+          {displayPerfumes.map(p =>
+            <PerfumeItem
+              key={p.id}
+              perfume={p}
+            />
+          )}
+        </div>
 
+        : <p className='empty-list'>No Perfuems Here</p>
+      }
     </div>
   );
 }

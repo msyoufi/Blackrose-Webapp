@@ -1,5 +1,5 @@
 interface Perfume {
-  id: number,
+  id: string,
   brand: string,
   name: string,
   sex: PerfumeSex,
@@ -24,7 +24,7 @@ type FragranceConcentration =
 type NewPerfume = Omit<Perfume, 'id'>;
 
 interface PerfumeFormData extends Perfume {
-  id?: number,
+  id?: string,
   sex: string,
   concentration: string,
   size: string,

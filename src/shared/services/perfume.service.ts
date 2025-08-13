@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { collection, doc, onSnapshot, query, setDoc, updateDoc, type DocumentReference } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, query, setDoc, updateDoc, type DocumentReference } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 export function usePerfumes(): Perfume[] {
@@ -11,7 +11,7 @@ export function usePerfumes(): Perfume[] {
 
       const unsubscribe = onSnapshot(q, querySnapshot => {
         const nextPerfumes: Perfume[] = [];
-        querySnapshot.forEach(doc => nextPerfumes.push({ ...doc.data(), id: Number(doc.id) } as Perfume));
+        querySnapshot.forEach(doc => nextPerfumes.push({ ...doc.data(), id: doc.id } as Perfume));
         setPerfumes(nextPerfumes);
       });
 
@@ -26,22 +26,20 @@ export function usePerfumes(): Perfume[] {
 }
 
 export async function createPerfume(perfume: NewPerfume): Promise<void> {
-  const id = new Date().getTime();
+  const id = new Date().getTime().toString();
   await setDoc(getDocRef(id), perfume);
 }
 
 export async function updatePerfume(perfume: Perfume): Promise<void> {
   const { id, ...perfumeData } = perfume;
-  console.log(perfumeData)
   await updateDoc(getDocRef(perfume.id), perfumeData);
 
 }
 
-export async function deletePerfume(id: number): Promise<void> {
-  // TODO
-  console.log(id);
+export async function deletePerfume(id: string): Promise<void> {
+  await deleteDoc(getDocRef(id));
 }
 
-function getDocRef(id: number): DocumentReference {
+function getDocRef(id: string): DocumentReference {
   return doc(db, 'perfumes/' + id);
 }

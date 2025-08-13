@@ -5,13 +5,7 @@ import { Button } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import './perfume-item.scss';
 
-export default function PerfumeItem({
-  perfume,
-  removePerfumeLocaly
-}: {
-  perfume: Perfume,
-  removePerfumeLocaly: (id: number) => void
-}) {
+export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
@@ -28,7 +22,6 @@ export default function PerfumeItem({
 
     try {
       await deletePerfume(id);
-      removePerfumeLocaly(id);
       snackbar.show('Perfume removed');
 
     } catch (err: unknown) {
