@@ -23,19 +23,8 @@ export function sortByKey<T>(
   return arr;
 }
 
-export function search<T, K extends keyof T>(
-  arr: T[],
-  key: K,
-  query: T[K]
-): T[] {
-  return arr.filter(({ [key]: val }) => {
-    if (typeof val === 'string')
-      return val.toLowerCase().startsWith(
-        (query as string).toLowerCase()
-      );
-
-    return val === query;
-  });
+export function matchString(str1: string, str2: string): boolean {
+  return str1.toLowerCase().startsWith(str2);
 }
 
 export function capitalize(str: string): string {

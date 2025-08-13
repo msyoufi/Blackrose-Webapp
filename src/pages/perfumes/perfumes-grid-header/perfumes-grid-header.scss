@@ -1,16 +1,17 @@
 .perfumes-grid-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   padding: 2rem 0;
+  gap: 1rem;
+}
+
+.header-buttons-box {
+  display: flex;
+  flex-direction: column;
   gap: .5rem;
 
-  .header-buttons-box {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    width: 10rem;
-    gap: .5rem;
+  button {
+    width: 100%;
   }
 }
 
@@ -20,25 +21,22 @@
   gap: 1rem;
 }
 
-.search-box,
-.filters-box {
+.sort-box {
   display: flex;
   align-items: center;
   gap: .5rem;
 
-  .MuiFormControl-root {
-    width: 8rem;
+  a {
+    color: #1c58d8;
   }
 }
 
-.search-box {
-  gap: 1rem;
-
-  .MuiFormControl-root {
-    width: 17.6rem;
+@media(max-width:650px) {
+  .perfumes-grid-header {
+    flex-direction: column;
   }
-}
 
-.filters-box {
-  padding-left: 1rem;
+  .header-buttons-box {
+    flex-direction: row;
+  }
 }
