@@ -1,22 +1,33 @@
 import { Outlet } from "react-router"
-import { ConfirmationDialogProvider } from "./shared/components/confirmation-dialog";
-import { SnackbarProvider } from "./shared/components/snackbar";
 import { PerfumeFormProvider } from "./pages/perfumes/perfume-form/perfume_form";
+import Header from "./shared/components/header/header";
+import { useAuth } from "./shared/context/auth.provider";
+import { CircularProgress } from "@mui/material";
+import AdminLogin from "./pages/admin-login/admin-login";
 
 export default function App() {
+  const { user, loading } = useAuth();
+
+  console.log(loading)
+  console.log(user)
+
+  if (loading) return (
+    <div className="overlay">
+      <CircularProgress size={30} />
+    </div>
+  );
+
+  if (!user) return <AdminLogin />;
+
   return (
-    <ConfirmationDialogProvider>
-      <SnackbarProvider>
-        <PerfumeFormProvider>
+    <PerfumeFormProvider>
 
-          <header></header>
+      <Header />
 
-          <main>
-            <Outlet />
-          </main>
+      <main>
+        <Outlet />
+      </main>
 
-        </PerfumeFormProvider>
-      </SnackbarProvider>
-    </ConfirmationDialogProvider>
+    </PerfumeFormProvider>
   );
 }
