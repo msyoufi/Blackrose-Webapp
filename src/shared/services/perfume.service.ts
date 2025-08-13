@@ -11,13 +11,11 @@ export function usePerfumes(): Perfume[] {
     try {
       const q = query(collection(db, 'perfumes'), orderBy('name'));
 
-      const unsubscribe = onSnapshot(q, querySnapshot => {
+      return onSnapshot(q, querySnapshot => {
         const nextPerfumes: Perfume[] = [];
         querySnapshot.forEach(doc => nextPerfumes.push({ ...doc.data(), id: doc.id } as Perfume));
         setPerfumes(nextPerfumes);
       });
-
-      return unsubscribe;
 
     } catch (err: unknown) {
       snackbar.show('Unable to load the Perfumes!', 'error');

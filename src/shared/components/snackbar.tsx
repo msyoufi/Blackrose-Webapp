@@ -5,9 +5,7 @@ const SnackbarContext = createContext<SnackbarContext | null>(null);
 
 export function useSnackbar(): SnackbarContext {
   const context = useContext(SnackbarContext);
-
-  if (!context)
-    throw new Error('Snackbar must be used in its context!');
+  if (!context) throw new Error('Snackbar must be used in its context!');
 
   return context;
 }
