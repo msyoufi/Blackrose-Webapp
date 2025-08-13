@@ -6,7 +6,7 @@ import Paginator from '../../shared/components/paginator';
 import { matchString } from '../../shared/utils/utils';
 import './perfumes-grid.scss';
 
-const PER_PAGE = 15;
+const PER_PAGE = 20;
 
 export default function PerfumesGrid() {
   const allPerfumes = usePerfumes();
@@ -54,7 +54,7 @@ export default function PerfumesGrid() {
       <Paginator
         page={page}
         count={pagesCount}
-        onChange={(_, val) => setPage(val)}
+        onChange={(_, val) => { setPage(val); scroll(0, 0); }}
       />
     </div>
   );
