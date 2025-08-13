@@ -4,6 +4,7 @@ import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import './perfume-item.scss';
+import { deleteImage } from '../../../shared/services/images.service';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
@@ -21,6 +22,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
     if (!confirm) return;
 
     try {
+      await deleteImage(id);
       await deletePerfume(id);
       snackbar.show('Perfume removed');
 
