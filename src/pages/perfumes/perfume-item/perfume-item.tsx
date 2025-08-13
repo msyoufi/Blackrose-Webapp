@@ -1,5 +1,5 @@
 import { useConfirmationDialog } from '../../../shared/components/confirmation-dialog';
-import { deletePerfume } from '../../../shared/services/perfume.service';
+import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.service';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
@@ -24,6 +24,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
     try {
       await deleteImage(id);
       await deletePerfume(id);
+
       snackbar.show('Perfume removed');
 
     } catch (err: unknown) {
@@ -31,17 +32,49 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
     }
   }
 
+  async function handleImageDelete(): Promise<void> {
+    const confirm = await confirmDialog.ask(
+      `Remove Image`,
+      `Remove the image for ${name}?`,
+      'Remove'
+    );
+
+    if (!confirm) return;
+
+    try {
+      await deleteImage(id);
+
+      perfume.image_url = '';
+      await updatePerfume(perfume);
+
+      snackbar.show('Image removed');
+
+    } catch (err: unknown) {
+      snackbar.show('Unable to remove the image!', 'error');
+    }
+  }
+
   return (
     <div className={'perfume-item' + (in_stock ? '' : ' out-of-stock')}>
-      <img src={image_url
-        ? image_url
-        : 'images/perfume-icon.png'
-      }
-        alt={image_url
-          ? 'Image of the perfume ' + name + ' by ' + brand
-          : 'Genereic perfume image'
+      <div className="perfume-image-box">
+        <img src={image_url
+          ? image_url
+          : 'images/perfume-icon.png'
         }
-      />
+          alt={image_url
+            ? 'Image of the perfume ' + name + ' by ' + brand
+            : 'Genereic perfume image'
+          }
+        />
+
+        {image_url && <button
+          className='img-remove-button'
+          onClick={handleImageDelete}
+        >
+          X
+        </button>}
+      </div>
+
 
       <div className="perfume-infos-box">
         <p>ID: {id}</p>
