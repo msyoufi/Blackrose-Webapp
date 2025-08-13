@@ -1,16 +1,18 @@
-import { useLoaderData } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PerfumesGridHeader from './perfumes-grid-header/perfumes-grid-header';
 import PerfumeItem from './perfume-item/perfume-item';
+import { usePerfumes } from '../../shared/services/perfume.service';
 import './perfumes-grid.scss';
 
 export default function PerfumesGrid() {
-  const initialPerfumes = useLoaderData<Perfume[]>();
-  const [perfumes, setPerfumes] = useState<Perfume[]>(initialPerfumes);
+  const initialPerfumes = usePerfumes();
+  const [displayPerfumes, setDisplayPerfumes] = useState<Perfume[]>([]);
+
+  useEffect(() => setDisplayPerfumes(initialPerfumes), [initialPerfumes]);
 
   function removePerfumeLocaly(id: number): void {
-    const nextPerfumes = perfumes.filter(p => p.id !== id);
-    setPerfumes(nextPerfumes);
+    const nextPerfumes = displayPerfumes.filter(p => p.id !== id);
+    setDisplayPerfumes(nextPerfumes);
   }
 
   return (
@@ -18,7 +20,7 @@ export default function PerfumesGrid() {
       <PerfumesGridHeader />
 
       <div className="perfumes-grid">
-        {perfumes.map(p =>
+        {displayPerfumes.map(p =>
           <PerfumeItem
             key={p.id}
             perfume={p}
