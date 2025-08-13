@@ -17,13 +17,16 @@ export default function PerfumesGrid() {
     <div>
       <PerfumesGridHeader />
 
-      {perfumes.map(p =>
-        <PerfumeItem
-          key={p.id}
-          perfume={p}
-          removePerfumeLocaly={removePerfumeLocaly}
-        />
-      )}
+      <div className="perfumes-grid">
+        {perfumes.map(p =>
+          <PerfumeItem
+            key={p.id}
+            perfume={p}
+            removePerfumeLocaly={removePerfumeLocaly}
+          />
+        )}
+      </div>
+
     </div>
   );
 }

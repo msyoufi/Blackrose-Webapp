@@ -1,0 +1,16 @@
+.perfumes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+
+.empty-list {
+  grid-column: 1 / 3;
+  text-align: center;
+}
+
+@media(max-width:1000px) {
+  .perfumes-grid {
+    grid-template-columns: 1fr;
+  }
+}
