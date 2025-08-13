@@ -55,6 +55,8 @@ export default function AdminLogin() {
         className='overlay-content-container'
         onSubmit={handleSubmit}
       >
+        <p className='form-title'>Black Rose</p>
+
         <div className="inputs-container">
           <TextField
             id='email'
@@ -72,6 +74,7 @@ export default function AdminLogin() {
             name='password'
             label='password'
             size='small'
+            type='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
