@@ -1,6 +1,6 @@
 import { type ChangeEvent, useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import { matchString, sortByKey } from '../../../shared/utils/utils';
+import { matchString, sortByKey, capitalize } from '../../../shared/utils/utils';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import './perfumes-grid-header.scss';
@@ -84,7 +84,7 @@ export default function PerfumesGridHeader({
 
           {sortingKeys.map(key =>
             <a key={key} onClick={() => handleSort(key)}>
-              {key}
+              {capitalize(key)}
             </a>
           )}
         </div>
