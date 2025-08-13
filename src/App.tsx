@@ -8,9 +8,6 @@ import AdminLogin from "./pages/admin-login/admin-login";
 export default function App() {
   const { user, loading } = useAuth();
 
-  console.log(loading)
-  console.log(user)
-
   if (loading) return (
     <div className="overlay">
       <CircularProgress size={30} />
