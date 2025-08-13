@@ -70,7 +70,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
     try {
       if (imgFile) {
         formData.image_url = await uploadImage(imgFile, perfumeId);
-        console.log('image uploaded with url: ', formData.image_url);
       }
 
       if (formMode === 'add') {
@@ -79,7 +78,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
       } else {
         await updatePerfume(formData as Perfume);
-
       }
 
       snackbar.show(message);
