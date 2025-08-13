@@ -113,9 +113,9 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             </Button>
           </div>
 
-          <div className="controls-container">
-            {id && <input type="hidden" name="id" id="id" value={id} />}
+          {id && <input type="hidden" name="id" id="id" value={id} />}
 
+          <div className="controls-grid">
             <TextField
               id='brand'
               name='brand'
@@ -165,14 +165,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             </TextField>
 
             <TextField
-              id='fragrance_type'
-              name='fragrance_type'
-              label='Fragrance Type'
-              size='small'
-              value={fragrance_type}
-            />
-
-            <TextField
               id='size'
               name='size'
               type='number'
@@ -195,10 +187,28 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             />
 
             <TextField
-              id="image"
-              name='image'
-              type='file'
-              slotProps={{ htmlInput: { accept: 'image/*' } }}
+              id='fragrance_type'
+              name='fragrance_type'
+              label='Fragrance Type'
+              size='small'
+              value={fragrance_type}
+            />
+
+
+            <FormControlLabel
+              label="Image"
+              labelPlacement='start'
+              style={{ margin: 0 }}
+              control={
+                <TextField
+                  id="image"
+                  name='image'
+                  type='file'
+                  size='small'
+                  style={{ marginLeft: 'auto', paddingLeft: '1rem' }}
+                  slotProps={{ htmlInput: { accept: 'image/*' } }}
+                />
+              }
             />
 
             <FormControlLabel
@@ -213,7 +223,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
                 />
               }
             />
-
           </div>
 
           <div className="buttons-bar">

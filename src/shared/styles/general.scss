@@ -15,8 +15,8 @@
 .overlay-content-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 60vw;
+  width: 90%;
+  max-width: 1000px;
   max-height: 90vh;
   padding: 1rem;
   background-color: var(--white);
@@ -31,10 +31,4 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-@media(max-width:750px) {
-  .overlay-content-container {
-    max-width: 90vw;
-  }
 }
