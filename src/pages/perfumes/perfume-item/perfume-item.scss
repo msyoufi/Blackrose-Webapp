@@ -18,6 +18,8 @@
 
 .perfume-image {
   width: 100%;
+  object-fit: contain;
+  max-height: 9rem;
 }
 
 .img-remove-button {
@@ -76,11 +78,19 @@
   pointer-events: all;
 }
 
+.in-stock-checkbox {
+  width: fit-content;
+}
+
 @media(max-width:650px) {
   .perfume-item {
     grid-template-columns: 6rem auto;
     align-items: center;
     font-size: .8rem;
+  }
+
+  .perfume-image {
+    max-height: 6rem;
   }
 
   .perfume-infos-box {
