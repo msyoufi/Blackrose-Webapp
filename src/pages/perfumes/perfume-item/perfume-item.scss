@@ -78,10 +78,6 @@
   pointer-events: all;
 }
 
-.in-stock-checkbox {
-  width: fit-content;
-}
-
 @media(max-width:650px) {
   .perfume-item {
     grid-template-columns: 6rem auto;

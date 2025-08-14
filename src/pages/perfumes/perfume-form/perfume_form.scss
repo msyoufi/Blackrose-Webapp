@@ -35,6 +35,9 @@
   object-fit: cover;
 }
 
+.in-stock-checkbox {
+  width: fit-content;
+}
 
 @media(max-width:850px) {
   .controls-grid {

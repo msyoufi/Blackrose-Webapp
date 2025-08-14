@@ -226,6 +226,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
             <FormControlLabel
               label="In stock"
+              className='in-stock-checkbox'
               control={
                 <Switch
                   id='in_stock'
