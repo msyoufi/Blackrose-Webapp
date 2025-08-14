@@ -1,7 +1,8 @@
-import { type ChangeEvent } from 'react';
-import { Button, TextField } from '@mui/material';
+import { useState, type ChangeEvent } from 'react';
+import { Button, CircularProgress, TextField } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
+import { downloadAllImagesAsDataUrl, generatePerfumesPDF } from '../../../shared/services/pdf.service';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
@@ -15,6 +16,7 @@ export default function PerfumesGridHeader({
   setSearchValue: (val: string) => void,
   setPage: (val: number) => void,
 }) {
+  const [loadingPDF, setLoadingPDF] = useState(false);
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
@@ -25,13 +27,19 @@ export default function PerfumesGridHeader({
   }
 
   async function createPDF(): Promise<void> {
+    setLoadingPDF(true);
+
     try {
-      // TODO
-      console.log('PDF for: ', allPerfumes);
+      const perfumesWithImages = await downloadAllImagesAsDataUrl(allPerfumes);
+      await generatePerfumesPDF(perfumesWithImages);
+
       snackbar.show('PDF created successfully');
 
     } catch (err: unknown) {
       snackbar.show('Unable to create a PDF file!', 'error');
+
+    } finally {
+      setLoadingPDF(false);
     }
   }
 
@@ -42,8 +50,13 @@ export default function PerfumesGridHeader({
           New Perfume +
         </Button >
 
-        <Button variant='contained' color='warning' onClick={createPDF}>
-          Create PDF
+        <Button
+          variant='contained'
+          color='warning'
+          disabled={loadingPDF}
+          onClick={createPDF}
+        >
+          {loadingPDF ? <CircularProgress size={24} /> : 'Create PDF'}
         </Button >
       </div>
 
