@@ -8,11 +8,13 @@ import './perfumes-grid-header.scss';
 export default function PerfumesGridHeader({
   allPerfumes,
   searchValue,
+  displayCount,
   setSearchValue,
   setPage
 }: {
   allPerfumes: Perfume[],
   searchValue: string,
+  displayCount: number,
   setSearchValue: (val: string) => void,
   setPage: (val: number) => void,
 }) {
@@ -66,7 +68,11 @@ export default function PerfumesGridHeader({
           onInput={handleSearch}
         />
 
-        <p>Total: {allPerfumes.length}</p>
+        <p className='counter-display'>
+          {searchValue
+            ? `"${searchValue}" : ${displayCount}`
+            : `All: ${allPerfumes.length}`}
+        </p>
       </div>
     </div>
   );

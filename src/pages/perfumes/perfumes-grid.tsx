@@ -35,6 +35,7 @@ export default function PerfumesGrid() {
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         setPage={setPage}
+        displayCount={displayPerfumes.length}
       />
 
       {displayPerfumes.length

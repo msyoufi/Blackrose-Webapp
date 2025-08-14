@@ -35,6 +35,10 @@
   }
 }
 
+.counter-display {
+  font-weight: 600;
+}
+
 @media(max-width:650px) {
   .perfumes-grid-header {
     flex-direction: column;
