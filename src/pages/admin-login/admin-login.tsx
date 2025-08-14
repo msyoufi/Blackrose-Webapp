@@ -3,6 +3,7 @@ import { useSnackbar } from '../../shared/components/snackbar';
 import { login } from '../../shared/services/auth.service';
 import { useState, type FormEvent } from 'react';
 import { FirebaseError } from 'firebase/app';
+import PasswordTextField from '../../shared/components/password-toggle';
 import './admin-login.scss';
 
 export default function AdminLogin() {
@@ -69,15 +70,10 @@ export default function AdminLogin() {
             required
           />
 
-          <TextField
+          <PasswordTextField
             id='password'
-            name='password'
-            label='password'
-            size='small'
-            type='password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
+            password={password}
+            setPassword={setPassword}
           />
         </div>
 
@@ -89,7 +85,7 @@ export default function AdminLogin() {
             size='medium'
             disabled={!email || !password || isLoading}
           >
-            {isLoading ? <CircularProgress size={20} /> : 'login'}
+            {isLoading ? <CircularProgress size={25} /> : 'login'}
           </Button>
 
           <Button
