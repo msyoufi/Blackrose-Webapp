@@ -18,7 +18,9 @@ export default function Header() {
 
   return (
     <header>
-      <p></p>
+      <div className='header-placeholder'>
+        {/* Placeholder div */}
+      </div>
 
       <h1>Black Rose</h1>
 

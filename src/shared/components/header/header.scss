@@ -1,7 +1,7 @@
 header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 2rem 0;
+  padding: 2rem 0 1rem;
 }
 
 h1 {
@@ -11,4 +11,14 @@ h1 {
 .auth-button {
   width: 6rem;
   justify-self: right;
+}
+
+@media(max-width:650px) {
+  header {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .header-placeholder {
+    display: none;
+  }
 }
