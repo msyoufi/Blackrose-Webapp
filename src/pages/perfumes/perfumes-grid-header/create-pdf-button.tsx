@@ -14,11 +14,15 @@ export default function CreatePDFButton({ allPerfumes }: { allPerfumes: Perfume[
     const collection = await collectionSelectForm.ask();
     if (!collection) return;
 
-    setLoading(true);
-
     const perfumes = collection === 'All'
       ? allPerfumes
       : allPerfumes.filter(p => p.collection === collection);
+
+    if (!perfumes.length) {
+      return snackbar.show(`'${collection}' collection empty`, 'warning');
+    }
+
+    setLoading(true);
 
     try {
       const perfumesWithImages = await downloadAllImagesAsDataUrl(perfumes);
