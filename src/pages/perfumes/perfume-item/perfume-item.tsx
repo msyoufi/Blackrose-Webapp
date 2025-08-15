@@ -78,7 +78,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
       await updatePerfume(newPerfume);
 
-      snackbar.show('Image found and uploaded to the database');
+      snackbar.show('Image added');
 
     } catch (err: unknown) {
       let message = 'Image search failed';
@@ -138,7 +138,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
           Remove
         </Button>
 
-        <Button
+        {!image_url && <Button
           size='small'
           variant='outlined'
           color='secondary'
@@ -146,7 +146,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
           disabled={searching}
         >
           {searching ? <CircularProgress size={25} color='secondary' /> : 'Image'}
-        </Button>
+        </Button>}
       </div>
 
       {deleting && <div className="delete-overlay">
