@@ -3,7 +3,7 @@ import { Button, CircularProgress, MenuItem, TextField } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import { downloadAllImagesAsDataUrl, generatePerfumesPDF } from '../../../shared/services/pdf.service';
-import { PerfumeCategory } from '../../../shared/data/perfumes.data';
+import { PerfumeCollection } from '../../../shared/data/perfumes.data';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
@@ -20,7 +20,7 @@ export default function PerfumesGridHeader({
   setPage: (val: number) => void,
 }) {
   const [loadingPDF, setLoadingPDF] = useState(false);
-  const [category, setCategory] = useState<PerfumeCategory | 'All'>('All');
+  const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
@@ -30,9 +30,9 @@ export default function PerfumesGridHeader({
     setPage(1);
   }
 
-  function handleCategoryChange(e: ChangeEvent<HTMLInputElement>): void {
-    const nextCategorey = e.target.value as PerfumeCategory | 'All';
-    setCategory(nextCategorey);
+  function handlecollectionChange(e: ChangeEvent<HTMLInputElement>): void {
+    const nextCollection = e.target.value as PerfumeCollection | 'All';
+    setCollection(nextCollection);
   }
 
   async function createPDF(): Promise<void> {
@@ -75,18 +75,18 @@ export default function PerfumesGridHeader({
           onInput={handleSearch}
         />
 
-        <div className="category-display-box">
+        <div className="collection-display-box">
           <TextField
-            id='category'
-            name='category'
-            label='Category'
+            id='collection'
+            name='collection'
+            label='Collection'
             size='small'
-            value={category}
-            onChange={handleCategoryChange}
+            value={collection}
+            onChange={handlecollectionChange}
             select required
           >
             <MenuItem key='All' value='All'>ALL</MenuItem>
-            {PerfumeCategory.map(option =>
+            {PerfumeCollection.map(option =>
               <MenuItem key={option} value={option}>{option}</MenuItem>
             )}
           </TextField>

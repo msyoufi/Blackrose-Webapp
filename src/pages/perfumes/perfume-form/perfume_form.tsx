@@ -1,7 +1,7 @@
 import { type ChangeEvent, createContext, type FormEvent, type ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { MenuItem, TextField, Button, FormControlLabel, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
-import { FragranceConcentrations, PerfumeCategory, PerfumeSex } from '../../../shared/data/perfumes.data';
+import { FragranceConcentrations, PerfumeCollection, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
 import { uploadImage } from '../../../shared/services/images.storage.service';
 import './perfume_form.scss';
@@ -26,7 +26,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, category, sex, concentration, fragrance_type, size, price } = formData;
+  const { id, brand, name, collection, sex, concentration, fragrance_type, size, price } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -144,16 +144,16 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             />
 
             <TextField
-              id='category'
-              name='category'
-              label='Category'
+              id='collection'
+              name='collection'
+              label='Collection'
               size='small'
-              value={category}
+              value={collection}
               onChange={handleChange}
               select required
             >
               <MenuItem key={0} value='' disabled hidden></MenuItem>
-              {PerfumeCategory.map(option =>
+              {PerfumeCollection.map(option =>
                 <MenuItem key={option} value={option}>{option}</MenuItem>
               )}
             </TextField>
@@ -257,7 +257,7 @@ const NewPerfume: PerfumeFormData = {
   brand: '',
   name: '',
   sex: '',
-  category: '',
+  collection: '',
   concentration: '',
   fragrance_type: '',
   size: '',

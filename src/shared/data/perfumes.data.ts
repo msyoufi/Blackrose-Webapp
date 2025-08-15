@@ -1,6 +1,6 @@
 export const PerfumeSex: PerfumeSex[] = ['Men', 'Women', 'Unisex'];
 
-export const PerfumeCategory: PerfumeCategory[] = ['Designer', 'Arabic', 'Private'];
+export const PerfumeCollection: PerfumeCollection[] = ['Designer', 'Arabic', 'Private'];
 
 export const FragranceConcentrations: FragranceConcentration[] = [
   'Eau de Toilette',
