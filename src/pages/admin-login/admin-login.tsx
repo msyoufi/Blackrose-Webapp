@@ -23,7 +23,7 @@ export default function AdminLogin() {
 
     try {
       await login(email, password);
-      snackbar.show('Loged In');
+      snackbar.show('Logged In');
 
     } catch (err: unknown) {
       let message = 'Login Failed';

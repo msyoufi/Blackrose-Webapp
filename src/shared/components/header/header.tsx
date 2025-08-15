@@ -9,7 +9,7 @@ export default function Header() {
   async function handleClick(): Promise<void> {
     try {
       await logout();
-      snackbar.show('Loged Out');
+      snackbar.show('Logged Out');
 
     } catch (err: unknown) {
       snackbar.show('Logout failed', 'error');
