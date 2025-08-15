@@ -180,11 +180,10 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               size='small'
               value={concentration}
               onChange={handleChange}
-              select required
+              select
             >
-              <MenuItem key={0} value='' disabled hidden></MenuItem>
-              {FragranceConcentrations.map(option =>
-                <MenuItem key={option} value={option}>{option}</MenuItem>
+              {FragranceConcentrations.map((option, i) =>
+                <MenuItem key={i} value={option}>{option}</MenuItem>
               )}
             </TextField>
 

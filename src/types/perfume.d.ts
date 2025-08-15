@@ -16,7 +16,8 @@ type PerfumeSex = 'Men' | 'Women' | 'Unisex';
 type PerfumeCollection = 'Designer' | 'Arabic' | 'Private';
 
 type FragranceConcentration =
-  'Eau de Toilette'
+  ''
+  | 'Eau de Toilette'
   | 'Eau de Parfum'
   | 'Parfum'
   | 'Elixir'
@@ -29,7 +30,6 @@ interface PerfumeFormData extends Perfume {
   id?: string,
   sex: string,
   collection: string,
-  concentration: string,
   size: string,
   price: string
 }
