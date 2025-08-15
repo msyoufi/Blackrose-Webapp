@@ -1,9 +1,9 @@
 import { useState, type ChangeEvent } from 'react';
-import { Button, CircularProgress, MenuItem, TextField } from '@mui/material';
+import { Button, CircularProgress, TextField } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import { downloadAllImagesAsDataUrl, generatePerfumesPDF } from '../../../shared/services/pdf.service';
-import { PerfumeCollection } from '../../../shared/data/perfumes.data';
+import CollectionSelectMenu from '../../../shared/components/collection-select-menu';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
@@ -74,20 +74,10 @@ export default function PerfumesGridHeader({
         />
 
         <div className="collection-display-box">
-          <TextField
-            id='collection'
-            name='collection'
-            label='Collection'
-            size='small'
-            value={collection}
-            onChange={e => setCollection(e.target.value as PerfumeCollection | 'All')}
-            select required
-          >
-            <MenuItem key='All' value='All'>ALL</MenuItem>
-            {PerfumeCollection.map(option =>
-              <MenuItem key={option} value={option}>{option}</MenuItem>
-            )}
-          </TextField>
+          <CollectionSelectMenu
+            collection={collection}
+            setCollection={setCollection}
+          />
 
           <span className='counter-display'>
             {(searchValue ? `"${searchValue}": ` : 'All: ') + perfumesCount}
