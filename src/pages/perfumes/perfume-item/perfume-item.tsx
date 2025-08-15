@@ -1,9 +1,9 @@
 import { useConfirmationDialog } from '../../../shared/components/confirmation-dialog';
-import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.service';
+import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
-import { deleteImage } from '../../../shared/services/images.service';
+import { deleteImage } from '../../../shared/services/images.storage.service';
 import { formatCurrency } from '../../../shared/utils/utils';
 import './perfume-item.scss';
 

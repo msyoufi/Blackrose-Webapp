@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import { downloadImage } from "./images.service";
+import { downloadImage } from "./images.storage.service";
 import { formatCurrency } from "../utils/utils";
 
 // The image_url property of the passed perfumes must be a Data URL and NOT a download URL!!!!

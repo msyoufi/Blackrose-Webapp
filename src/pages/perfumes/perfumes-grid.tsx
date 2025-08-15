@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { usePerfumes } from '../../shared/services/perfume.service';
+import { usePerfumes } from '../../shared/services/perfume.db.service';
 import PerfumesGridHeader from './perfumes-grid-header/perfumes-grid-header';
 import PerfumeItem from './perfume-item/perfume-item';
 import Paginator from '../../shared/components/paginator';

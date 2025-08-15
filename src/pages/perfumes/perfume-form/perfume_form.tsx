@@ -2,8 +2,8 @@ import { type ChangeEvent, createContext, type FormEvent, type ReactNode, useCal
 import { MenuItem, TextField, Button, Switch, FormControlLabel, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { FragranceConcentrations, PerfumeSex } from '../../../shared/data/perfumes.data';
-import { createPerfume, updatePerfume } from '../../../shared/services/perfume.service';
-import { uploadImage } from '../../../shared/services/images.service';
+import { createPerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
+import { uploadImage } from '../../../shared/services/images.storage.service';
 import './perfume_form.scss';
 
 const PerfumeFormContext = createContext<PerfumeFormContext | null>(null);
