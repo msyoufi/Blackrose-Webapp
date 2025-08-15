@@ -9,18 +9,21 @@ import './perfumes-grid-header.scss';
 export default function PerfumesGridHeader({
   allPerfumes,
   searchValue,
-  displayCount,
   setSearchValue,
+  collection,
+  setCollection,
+  displayCount,
   setPage
 }: {
   allPerfumes: Perfume[],
   searchValue: string,
-  displayCount: number,
   setSearchValue: (val: string) => void,
+  collection: PerfumeCollection | 'All',
+  setCollection: (val: PerfumeCollection | 'All') => void,
+  displayCount: number,
   setPage: (val: number) => void,
 }) {
   const [loadingPDF, setLoadingPDF] = useState(false);
-  const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
@@ -28,11 +31,6 @@ export default function PerfumesGridHeader({
     const query = e.target.value;
     setSearchValue(query);
     setPage(1);
-  }
-
-  function handlecollectionChange(e: ChangeEvent<HTMLInputElement>): void {
-    const nextCollection = e.target.value as PerfumeCollection | 'All';
-    setCollection(nextCollection);
   }
 
   async function createPDF(): Promise<void> {
@@ -82,7 +80,7 @@ export default function PerfumesGridHeader({
             label='Collection'
             size='small'
             value={collection}
-            onChange={handlecollectionChange}
+            onChange={e => setCollection(e.target.value as PerfumeCollection | 'All')}
             select required
           >
             <MenuItem key='All' value='All'>ALL</MenuItem>

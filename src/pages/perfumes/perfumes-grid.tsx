@@ -13,20 +13,27 @@ export default function PerfumesGrid() {
   const [displayPerfumes, setDisplayPerfumes] = useState<Perfume[]>([]);
   const [pagesCount, setPagesCount] = useState(Math.ceil(allPerfumes.length / PER_PAGE));
   const [searchValue, setSearchValue] = useState<string>('');
+  const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const found = allPerfumes.filter(({ brand, name }) =>
-      matchString(brand, searchValue) || matchString(name, searchValue)
-    );
+    const collectionPerfumes = collection === 'All'
+      ? allPerfumes.slice()
+      : allPerfumes.filter(p => p.collection === collection);
+
+    const foundPerfumes = searchValue === ''
+      ? collectionPerfumes.slice()
+      : collectionPerfumes.filter(({ brand, name }) =>
+        matchString(brand, searchValue) || matchString(name, searchValue)
+      );
 
     const start = (page - 1) * PER_PAGE;
-    const paginated = found.slice(start, start + PER_PAGE);
+    const paginated = foundPerfumes.slice(start, start + PER_PAGE);
 
     setDisplayPerfumes(paginated);
-    setPagesCount(Math.ceil(found.length / PER_PAGE));
+    setPagesCount(Math.ceil(foundPerfumes.length / PER_PAGE));
 
-  }, [page, allPerfumes, searchValue]);
+  }, [page, allPerfumes, searchValue, collection]);
 
   return (
     <div>
@@ -34,6 +41,8 @@ export default function PerfumesGrid() {
         allPerfumes={allPerfumes}
         searchValue={searchValue}
         setSearchValue={setSearchValue}
+        collection={collection}
+        setCollection={setCollection}
         setPage={setPage}
         displayCount={displayPerfumes.length}
       />
