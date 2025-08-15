@@ -18,25 +18,18 @@
 .search-filter-wrapper {
   display: flex;
   flex-direction: column;
+  min-width: 25rem;
   gap: 1rem;
 }
 
-.sort-box {
-  display: flex;
+.category-display-box {
+  display: grid;
+  grid-template-columns: 7.5rem auto;
   align-items: center;
-  gap: .5rem;
-
-  a {
-    color: #1c58d8;
-  }
-
-  a.selected {
-    text-decoration: underline;
-  }
+  gap: 1rem;
 }
 
 .counter-display {
-  padding-left: .75rem;
   font-weight: 600;
 }
 

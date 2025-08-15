@@ -1,8 +1,9 @@
 import { useState, type ChangeEvent } from 'react';
-import { Button, CircularProgress, TextField } from '@mui/material';
+import { Button, CircularProgress, MenuItem, TextField } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import { downloadAllImagesAsDataUrl, generatePerfumesPDF } from '../../../shared/services/pdf.service';
+import { PerfumeCategory } from '../../../shared/data/perfumes.data';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
@@ -19,6 +20,7 @@ export default function PerfumesGridHeader({
   setPage: (val: number) => void,
 }) {
   const [loadingPDF, setLoadingPDF] = useState(false);
+  const [category, setCategory] = useState<PerfumeCategory | 'All'>('All');
   const perfumeForm = usePerfumeForm();
   const snackbar = useSnackbar();
 
@@ -26,6 +28,11 @@ export default function PerfumesGridHeader({
     const query = e.target.value;
     setSearchValue(query);
     setPage(1);
+  }
+
+  function handleCategoryChange(e: ChangeEvent<HTMLInputElement>): void {
+    const nextCategorey = e.target.value as PerfumeCategory | 'All';
+    setCategory(nextCategorey);
   }
 
   async function createPDF(): Promise<void> {
@@ -68,11 +75,28 @@ export default function PerfumesGridHeader({
           onInput={handleSearch}
         />
 
-        <p className='counter-display'>
-          {searchValue
-            ? `"${searchValue}" : ${displayCount}`
-            : `All: ${allPerfumes.length}`}
-        </p>
+        <div className="category-display-box">
+          <TextField
+            id='category'
+            name='category'
+            label='Category'
+            size='small'
+            value={category}
+            onChange={handleCategoryChange}
+            select required
+          >
+            <MenuItem key='All' value='All'>ALL</MenuItem>
+            {PerfumeCategory.map(option =>
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            )}
+          </TextField>
+
+          <span className='counter-display'>
+            {searchValue
+              ? `"${searchValue}" : ${displayCount}`
+              : `All: ${allPerfumes.length}`}
+          </span>
+        </div>
       </div>
     </div>
   );
