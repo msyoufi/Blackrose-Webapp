@@ -5,7 +5,7 @@ const baseURL = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${
 export async function findImageUrl(perfume: Perfume): Promise<string> {
   const { brand, name, concentration } = perfume;
 
-  const query = [brand, name, concentration].join(' - ');
+  const query = [name, brand, concentration].join(' ');
   const searchUrl = baseURL + encodeURIComponent(query);
 
   const response = await fetch(searchUrl);
