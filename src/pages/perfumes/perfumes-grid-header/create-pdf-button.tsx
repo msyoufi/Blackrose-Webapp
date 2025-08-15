@@ -26,7 +26,7 @@ export default function CreatePDFButton({ allPerfumes }: { allPerfumes: Perfume[
 
     try {
       const perfumesWithImages = await downloadAllImagesAsDataUrl(perfumes);
-      await generatePerfumesPDF(perfumesWithImages);
+      await generatePerfumesPDF(perfumesWithImages, collection);
 
       snackbar.show('PDF created successfully');
 

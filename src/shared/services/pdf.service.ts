@@ -3,7 +3,7 @@ import { downloadImage } from "./images.storage.service";
 import { formatCurrency } from "../utils/utils";
 
 // The image_url property of the passed perfumes must be a Data URL and NOT a download URL!!!!
-export async function generatePerfumesPDF(perfumes: Perfume[]): Promise<void> {
+export async function generatePerfumesPDF(perfumes: Perfume[], collection: PerfumeCollection | 'All'): Promise<void> {
   const doc = new jsPDF({ unit: 'em', format: 'A6' });
 
   const margin = 1;
