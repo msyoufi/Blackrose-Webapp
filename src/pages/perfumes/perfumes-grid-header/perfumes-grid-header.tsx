@@ -12,7 +12,7 @@ export default function PerfumesGridHeader({
   setSearchValue,
   collection,
   setCollection,
-  displayCount,
+  perfumesCount,
   setPage
 }: {
   allPerfumes: Perfume[],
@@ -20,7 +20,7 @@ export default function PerfumesGridHeader({
   setSearchValue: (val: string) => void,
   collection: PerfumeCollection | 'All',
   setCollection: (val: PerfumeCollection | 'All') => void,
-  displayCount: number,
+  perfumesCount: number,
   setPage: (val: number) => void,
 }) {
   const [loadingPDF, setLoadingPDF] = useState(false);
@@ -90,9 +90,7 @@ export default function PerfumesGridHeader({
           </TextField>
 
           <span className='counter-display'>
-            {searchValue
-              ? `"${searchValue}" : ${displayCount}`
-              : `All: ${allPerfumes.length}`}
+            {(searchValue ? `"${searchValue}": ` : 'All: ') + perfumesCount}
           </span>
         </div>
       </div>
