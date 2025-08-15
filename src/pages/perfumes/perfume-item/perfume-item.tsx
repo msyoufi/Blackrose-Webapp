@@ -88,7 +88,6 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
       }
 
       snackbar.show(message, 'error');
-      console.log(err);
 
     } finally {
       setSearching(false);
