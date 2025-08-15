@@ -1,5 +1,5 @@
 import { type ChangeEvent, createContext, type FormEvent, type ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { MenuItem, TextField, Button, Switch, FormControlLabel, CircularProgress } from '@mui/material';
+import { MenuItem, TextField, Button, FormControlLabel, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { FragranceConcentrations, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
@@ -26,7 +26,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, sex, concentration, fragrance_type, size, price, in_stock } = formData;
+  const { id, brand, name, sex, concentration, fragrance_type, size, price } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -223,20 +223,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
                 />
               }
             />
-
-            <FormControlLabel
-              label="In stock"
-              className='in-stock-checkbox'
-              control={
-                <Switch
-                  id='in_stock'
-                  name='in_stock'
-                  value={in_stock}
-                  checked={in_stock}
-                  onChange={handleChange}
-                />
-              }
-            />
           </div>
 
           <div className="buttons-bar">
@@ -265,6 +251,5 @@ const NewPerfume: PerfumeFormData = {
   fragrance_type: '',
   size: '',
   price: '',
-  in_stock: true,
   image_url: ''
 };

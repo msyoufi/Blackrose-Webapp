@@ -10,7 +10,7 @@ import { downloadFileFromUrl, findImageUrl } from '../../../shared/services/imag
 import './perfume-item.scss';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
-  const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
+  const { id, brand, name, sex, size, price, concentration, image_url } = perfume;
   const [searching, setSearching] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -95,7 +95,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   }
 
   return (
-    <div className={'perfume-item' + (in_stock ? '' : ' out-of-stock')}>
+    <div className='perfume-item'>
       {image_url && <button
         className='img-remove-button'
         onClick={handleImageDelete}

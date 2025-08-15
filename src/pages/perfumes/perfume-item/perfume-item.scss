@@ -68,10 +68,6 @@
   border-color: var(--black);
 }
 
-.perfume-item.out-of-stock:hover {
-  border-color: #d42842;
-}
-
 .perfume-item:hover .perfume-buttons-box,
 .perfume-item:hover .img-remove-button {
   opacity: 1;

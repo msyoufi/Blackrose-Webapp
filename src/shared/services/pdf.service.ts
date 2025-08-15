@@ -43,7 +43,7 @@ export async function generatePerfumesPDF(perfumes: Perfume[]): Promise<void> {
   const lastItme = perfumes.length - 1;
 
   perfumes.forEach((perfume, i) => {
-    const { name, brand, size, price, image_url, in_stock } = perfume;
+    const { name, brand, size, price, image_url } = perfume;
 
     if (image_url) {
       doc.addImage(image_url, 'WEBP', x, y + 1, imgWidth, imgHeight);
@@ -63,11 +63,8 @@ export async function generatePerfumesPDF(perfumes: Perfume[]): Promise<void> {
     doc.text(`${size} ml - ${formatCurrency(price)} USh`, xtext, ytext + 4);
 
     // draw a border
-    in_stock
-      ? doc.setDrawColor(235, 224, 224) // gray
-      : doc.setDrawColor(236, 168, 168); // red
-
     doc.setLineWidth(0.05)
+    doc.setDrawColor(235, 224, 224) // gray
     doc.roundedRect(x, y, itemWidth, itemHeight, .2, .2);
 
     y += itemHeight + margin;

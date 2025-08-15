@@ -7,7 +7,6 @@ interface Perfume {
   fragrance_type: string,
   size: number,
   price: number,
-  in_stock: boolean,
   image_url: string
 }
 
