@@ -49,7 +49,7 @@ export default function PerfumesGrid() {
           )}
         </div>
 
-        : <p className='empty-list'>No Perfuems Here</p>
+        : <p className='empty-list'>No Perfumes Here</p>
       }
 
       <Paginator
