@@ -78,6 +78,16 @@
   pointer-events: all;
 }
 
+.delete-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+}
+
 @media(max-width:650px) {
   .perfume-item {
     grid-template-columns: 6rem auto;

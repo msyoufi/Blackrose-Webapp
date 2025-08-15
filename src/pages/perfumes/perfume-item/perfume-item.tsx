@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { useConfirmationDialog } from '../../../shared/components/confirmation-dialog';
 import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
 import { useSnackbar } from '../../../shared/components/snackbar';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
-import { deleteImage } from '../../../shared/services/images.storage.service';
+import { deleteImage, uploadImage } from '../../../shared/services/images.storage.service';
 import { formatCurrency } from '../../../shared/utils/utils';
+import { downloadFileFromUrl, findImageUrl } from '../../../shared/services/image.search.service';
 import './perfume-item.scss';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   const { id, brand, name, sex, size, price, concentration, image_url, in_stock } = perfume;
+  const [searching, setSearching] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
@@ -23,6 +27,8 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     if (!confirm) return;
 
+    setDeleting(true);
+
     try {
       if (image_url)
         await deleteImage(id);
@@ -33,6 +39,9 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     } catch (err: unknown) {
       snackbar.show('Unable to remove the perfume!', 'error');
+
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -55,6 +64,34 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     } catch (err: unknown) {
       snackbar.show('Unable to remove the image!', 'error');
+    }
+  }
+
+  async function handleImageSearch(): Promise<void> {
+    setSearching(true);
+
+    try {
+      const imgUrl = await findImageUrl(perfume);
+      const imgBlob = await downloadFileFromUrl(imgUrl);
+      const downloadUrl = await uploadImage(imgBlob, id);
+      const newPerfume = { ...perfume, image_url: downloadUrl };
+
+      await updatePerfume(newPerfume);
+
+      snackbar.show('Image found and uploaded to the database');
+
+    } catch (err: unknown) {
+      let message = 'Image search failed';
+
+      if (err instanceof Error) {
+        message = err.message;
+      }
+
+      snackbar.show(message, 'error');
+      console.log(err);
+
+    } finally {
+      setSearching(false);
     }
   }
 
@@ -101,7 +138,23 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
         >
           Remove
         </Button>
+
+        <Button
+          size='small'
+          variant='outlined'
+          color='secondary'
+          onClick={handleImageSearch}
+          disabled={searching}
+        >
+          {searching ? <CircularProgress size={25} color='secondary' /> : 'Image'}
+        </Button>
       </div>
+
+      {deleting && <div className="delete-overlay">
+        <CircularProgress size={20} />
+      </div>
+      }
+
     </div>
   );
 }
