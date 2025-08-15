@@ -11,7 +11,7 @@ const PER_PAGE = 20;
 export default function PerfumesGrid() {
   const allPerfumes = usePerfumes();
   const [displayPerfumes, setDisplayPerfumes] = useState<Perfume[]>([]);
-  const [pagesCount, setPagesCount] = useState(Math.ceil(allPerfumes.length / PER_PAGE));
+  const [pagesCount, setPagesCount] = useState(0);
   const [searchValue, setSearchValue] = useState<string>('');
   const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
   const [perfumesCount, setPerfumesCount] = useState(0);
