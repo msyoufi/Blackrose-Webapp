@@ -30,4 +30,7 @@ declare global {
     loading: boolean;
   };
 
+  interface CollectionSelectContext {
+    ask: () => Promise<PerfumeCollection | 'All' | null>
+  }
 }
