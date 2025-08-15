@@ -5,6 +5,7 @@ import PerfumeItem from './perfume-item/perfume-item';
 import Paginator from '../../shared/components/paginator';
 import { matchString } from '../../shared/utils/utils';
 import './perfumes-grid.scss';
+import { CollectionSelectProvider } from '../../shared/components/collection-select-form';
 
 const PER_PAGE = 20;
 
@@ -39,15 +40,17 @@ export default function PerfumesGrid() {
 
   return (
     <div>
-      <PerfumesGridHeader
-        allPerfumes={allPerfumes}
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-        collection={collection}
-        setCollection={setCollection}
-        setPage={setPage}
-        perfumesCount={perfumesCount}
-      />
+      <CollectionSelectProvider>
+        <PerfumesGridHeader
+          allPerfumes={allPerfumes}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          collection={collection}
+          setCollection={setCollection}
+          setPage={setPage}
+          perfumesCount={perfumesCount}
+        />
+      </CollectionSelectProvider>
 
       {displayPerfumes.length
 
