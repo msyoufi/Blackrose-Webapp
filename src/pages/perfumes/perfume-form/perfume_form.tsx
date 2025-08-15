@@ -1,7 +1,7 @@
 import { type ChangeEvent, createContext, type FormEvent, type ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { MenuItem, TextField, Button, FormControlLabel, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
-import { FragranceConcentrations, PerfumeSex } from '../../../shared/data/perfumes.data';
+import { FragranceConcentrations, PerfumeCategory, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
 import { uploadImage } from '../../../shared/services/images.storage.service';
 import './perfume_form.scss';
@@ -26,15 +26,10 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, sex, concentration, fragrance_type, size, price } = formData;
+  const { id, brand, name, category, sex, concentration, fragrance_type, size, price } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
-
-    if (type === 'checkbox') {
-      // The onchange event fires with the "current" checkbox value -value gets changed at the end of this function ;)-
-      value = value === 'false';
-    }
 
     if (type === 'number') {
       value = Number.isNaN(valueAsNumber) ? '' : valueAsNumber;
@@ -149,6 +144,21 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             />
 
             <TextField
+              id='category'
+              name='category'
+              label='Category'
+              size='small'
+              value={category}
+              onChange={handleChange}
+              select required
+            >
+              <MenuItem key={0} value='' disabled hidden></MenuItem>
+              {PerfumeCategory.map(option =>
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              )}
+            </TextField>
+
+            <TextField
               id='sex'
               name='sex'
               label='Sex'
@@ -179,6 +189,14 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             </TextField>
 
             <TextField
+              id='fragrance_type'
+              name='fragrance_type'
+              label='Fragrance Type'
+              size='small'
+              value={fragrance_type}
+            />
+
+            <TextField
               id='size'
               name='size'
               type='number'
@@ -198,14 +216,6 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               value={price}
               slotProps={{ htmlInput: { min: 1, value: price === 0 ? '' : price } }}
               required
-            />
-
-            <TextField
-              id='fragrance_type'
-              name='fragrance_type'
-              label='Fragrance Type'
-              size='small'
-              value={fragrance_type}
             />
 
             <FormControlLabel
@@ -247,6 +257,7 @@ const NewPerfume: PerfumeFormData = {
   brand: '',
   name: '',
   sex: '',
+  category: '',
   concentration: '',
   fragrance_type: '',
   size: '',

@@ -2,6 +2,7 @@ interface Perfume {
   id: string,
   brand: string,
   name: string,
+  category: PerfumeCategory,
   sex: PerfumeSex,
   concentration: FragranceConcentration,
   fragrance_type: string,
@@ -11,6 +12,8 @@ interface Perfume {
 }
 
 type PerfumeSex = 'Men' | 'Women' | 'Unisex';
+
+type PerfumeCategory = 'Designer' | 'Arabic' | 'Private';
 
 type FragranceConcentration =
   'Eau de Toilette'
@@ -25,6 +28,7 @@ type NewPerfume = Omit<Perfume, 'id'>;
 interface PerfumeFormData extends Perfume {
   id?: string,
   sex: string,
+  category: string,
   concentration: string,
   size: string,
   price: string
