@@ -3,23 +3,69 @@ import { downloadImage } from "./images.storage.service";
 import { formatCurrency } from "../utils/utils";
 
 // The image_url property of the passed perfumes must be a Data URL and NOT a download URL!!!!
-export async function generatePerfumesPDF(perfumes: Perfume[], collection: PerfumeCollection | 'All'): Promise<void> {
+// Use the methode bellow "downloadAllImagesAsDataUrl" to download the images first.
+export async function generatePerfumesPDF(
+  perfumes: Perfume[],
+  collection: PerfumeCollection | 'All'
+): Promise<void> {
   const doc = new jsPDF({ unit: 'em', format: 'A6' });
-
-  const margin = 1;
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
 
+  writeCoverPage(doc, pageWidth, pageHeight, collection);
+
+  // add perfumes beggining from the seconde page
+  doc.addPage();
+
+  writePerfumes(doc, pageWidth, pageHeight, perfumes);
+
+  doc.save(`${collection} Perfumes.pdf`);
+}
+
+function writeCoverPage(
+  doc: jsPDF,
+  pageWidth: number,
+  pageHeight: number,
+  collection: PerfumeCollection | 'All'
+): void {
+  const center = pageWidth / 2;
+  let title = collection + ' Perfumes';
+  if (collection === 'Private')
+    title = title.replace(' ', ' Collection ');
+
+  // TODO
+  // doc.setFont('helvetica', 'bold', 600);
+  doc.setFontSize(20);
+  doc.text('Black Rose', center, 7, { align: 'center' });
+
+  doc.setFontSize(16);
+  doc.text(title, center, 10, { align: 'center' });
+
+  doc.setFontSize(12);
+  // TODO
+  const address1 = 'address row 1';
+  const address2 = 'address row 2';
+  doc.text(address1, center, 16, { align: 'center' });
+  doc.text(address2, center, 17.75, { align: 'center' });
+
+  doc.setFontSize(8);
+  doc.text(new Date().toDateString(), pageWidth - 9, pageHeight - 3);
+}
+
+function writePerfumes(
+  doc: jsPDF,
+  pageWidth: number,
+  pageHeight: number,
+  perfumes: Perfume[]
+): void {
+  const margin = 1;
   const itemHeight = 10;
   const itemWidth = pageWidth - margin * 2;
-
   const imgHeight = itemHeight - margin * 2;
   const imgWidth = imgHeight;
-
   let x = margin;
   let xtext = imgWidth + margin;
-
   let y = margin;
   let ytext = margin * 4;
 
@@ -27,20 +73,7 @@ export async function generatePerfumesPDF(perfumes: Perfume[], collection: Perfu
   const defaultImage = document.createElement('img');
   defaultImage.src = 'images/perfume-icon.png';
 
-  // write the cover page
-  doc.setFontSize(20);
-  doc.text('Black Rose', (pageWidth / 2) - 5, 10);
-
-  doc.setFontSize(16);
-  doc.text('Designer Perfumes', (pageWidth / 2) - 6.25, 15);
-
-  doc.setFontSize(8);
-  doc.text(new Date().toDateString(), pageWidth - 9, pageHeight - 3);
-
-  // add perfumes to the seconde page
-  doc.addPage();
-
-  const lastItme = perfumes.length - 1;
+  const lastItem = perfumes.length - 1;
 
   perfumes.forEach((perfume, i) => {
     const { name, brand, size, price, image_url } = perfume;
@@ -52,6 +85,7 @@ export async function generatePerfumesPDF(perfumes: Perfume[], collection: Perfu
       doc.addImage(defaultImage, 'PNG', x, y + 1, imgWidth, imgHeight);
     }
 
+    // TODO
     // doc.setFont('helvetica', 'bold', 600);
     doc.setFontSize(13);
     doc.text(name, xtext, ytext);
@@ -70,15 +104,13 @@ export async function generatePerfumesPDF(perfumes: Perfume[], collection: Perfu
     y += itemHeight + margin;
     ytext += itemHeight + margin;
 
-    // Add new page if beyond bottom margin
-    if (y + itemHeight > pageHeight && i < lastItme) {
+    // Add new page if beyond bottom margin and still items in the list
+    if (y + itemHeight > pageHeight && i < lastItem) {
       doc.addPage();
       y = margin;
       ytext = margin * 4;
     }
   });
-
-  doc.save('perfumes.pdf');
 }
 
 export async function downloadAllImagesAsDataUrl(perfumes: Perfume[]): Promise<Perfume[]> {
