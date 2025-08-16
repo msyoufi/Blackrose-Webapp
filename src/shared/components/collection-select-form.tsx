@@ -52,7 +52,7 @@ export function CollectionSelectProvider({ children }: { children: ReactNode }) 
 
           <CollectionSelectMenu
             collection={collection}
-            setCollection={setCollection}
+            onChange={setCollection}
           />
 
           <div

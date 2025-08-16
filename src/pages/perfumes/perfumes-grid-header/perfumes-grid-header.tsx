@@ -30,6 +30,11 @@ export default function PerfumesGridHeader({
     setPage(1);
   }
 
+  function handleCollectionChange(collection: PerfumeCollection | "All"): void {
+    setPage(1);
+    setCollection(collection);
+  }
+
   return (
     <div className="perfumes-grid-header">
       <div className="header-buttons-box">
@@ -49,7 +54,7 @@ export default function PerfumesGridHeader({
         <div className="collection-display-box">
           <CollectionSelectMenu
             collection={collection}
-            setCollection={setCollection}
+            onChange={handleCollectionChange}
           />
 
           <span className='counter-display'>

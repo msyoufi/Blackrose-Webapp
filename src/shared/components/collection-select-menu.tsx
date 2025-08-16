@@ -3,10 +3,10 @@ import { PerfumeCollection } from "../data/perfumes.data";
 
 export default function CollectionSelectMenu({
   collection,
-  setCollection,
+  onChange,
 }: {
   collection: PerfumeCollection | 'All',
-  setCollection: (val: PerfumeCollection | 'All') => void,
+  onChange: (val: PerfumeCollection | 'All') => void,
 }) {
   return (
     <TextField
@@ -15,7 +15,7 @@ export default function CollectionSelectMenu({
       label='Collection'
       size='small'
       value={collection}
-      onChange={e => setCollection(e.target.value as PerfumeCollection | 'All')}
+      onChange={e => onChange(e.target.value as PerfumeCollection | 'All')}
       select required
     >
       <MenuItem key='All' value='All'>ALL</MenuItem>
