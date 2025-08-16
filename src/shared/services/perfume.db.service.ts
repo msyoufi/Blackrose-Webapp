@@ -3,7 +3,9 @@ import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, updateD
 import { useState, useEffect } from 'react';
 import { useSnackbar } from '../components/snackbar';
 
-export function usePerfumes(): Perfume[] {
+export function usePerfumes(): [boolean, unknown, Perfume[]] {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const snackbar = useSnackbar();
 
@@ -15,14 +17,17 @@ export function usePerfumes(): Perfume[] {
         const nextPerfumes: Perfume[] = [];
         querySnapshot.forEach(doc => nextPerfumes.push({ ...doc.data(), id: doc.id } as Perfume));
         setPerfumes(nextPerfumes);
+        setLoading(false);
       });
 
     } catch (err: unknown) {
       snackbar.show('Unable to load the Perfumes!', 'error');
+      setError(err);
+      setLoading(false);
     }
   }, []);
 
-  return perfumes;
+  return [loading, error, perfumes];
 }
 
 export async function createPerfume(newId: string, perfume: NewPerfume): Promise<void> {

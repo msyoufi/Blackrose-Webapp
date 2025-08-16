@@ -6,11 +6,13 @@ import Paginator from '../../shared/components/paginator';
 import { matchString } from '../../shared/utils/utils';
 import './perfumes-grid.scss';
 import { CollectionSelectProvider } from '../../shared/components/collection-select-form';
+import { CircularProgress } from '@mui/material';
 
 const PER_PAGE = 20;
 
 export default function PerfumesGrid() {
-  const allPerfumes = usePerfumes();
+  const [loadingPerfumes, error, allPerfumes] = usePerfumes();
+
   const [displayPerfumes, setDisplayPerfumes] = useState<Perfume[]>([]);
   const [pagesCount, setPagesCount] = useState(0);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -32,6 +34,7 @@ export default function PerfumesGrid() {
     const start = (page - 1) * PER_PAGE;
     const paginated = foundPerfumes.slice(start, start + PER_PAGE);
 
+
     setDisplayPerfumes(paginated);
     setPerfumesCount(foundPerfumes.length);
     setPagesCount(Math.ceil(foundPerfumes.length / PER_PAGE));
@@ -52,18 +55,24 @@ export default function PerfumesGrid() {
         />
       </CollectionSelectProvider>
 
-      {displayPerfumes.length
+      {loadingPerfumes
 
-        ? <div className="perfumes-grid">
-          {displayPerfumes.map(p =>
-            <PerfumeItem
-              key={p.id}
-              perfume={p}
-            />
-          )}
+        ? <div className="empty-list">
+          <CircularProgress size={40} />
         </div>
 
-        : <p className='empty-list'>No Perfumes Here</p>
+        : displayPerfumes.length
+
+          ? <div className="perfumes-grid">
+            {displayPerfumes.map(p =>
+              <PerfumeItem
+                key={p.id}
+                perfume={p}
+              />
+            )}
+          </div>
+
+          : <p className='empty-list'>No Perfumes Here</p>
       }
 
       <Paginator
