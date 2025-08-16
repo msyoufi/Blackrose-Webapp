@@ -13,6 +13,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
   const { id, brand, name, sex, size, price, concentration, image_url } = perfume;
   const [searching, setSearching] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(true);
 
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
@@ -54,6 +55,8 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     if (!confirm) return;
 
+    setLoadingImg(true);
+
     try {
       await deleteImage(id);
 
@@ -64,11 +67,15 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     } catch (err: unknown) {
       snackbar.show('Unable to remove the image!', 'error');
+
+    } finally {
+      setLoadingImg(false);
     }
   }
 
   async function handleImageSearch(): Promise<void> {
     setSearching(true);
+    setLoadingImg(true);
 
     try {
       const imgUrl = await findImageUrl(perfume);
@@ -91,27 +98,37 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
     } finally {
       setSearching(false);
+      setLoadingImg(false);
     }
   }
 
   return (
     <div className='perfume-item'>
-      {image_url && <button
-        className='img-remove-button'
-        onClick={handleImageDelete}
-      >
-        X
-      </button>}
+      {image_url
+        ? <div className='image-box'>
+          <img className='perfume-image'
+            src={image_url}
+            alt={'Image of the perfume ' + name + ' by ' + brand}
+            onLoad={() => setLoadingImg(false)}
+            onError={() => setLoadingImg(false)}
+          />
 
-      <img className='perfume-image' src={image_url
-        ? image_url
-        : 'images/perfume-icon.png'
+          <button
+            className='img-remove-button'
+            onClick={handleImageDelete}
+          >
+            X
+          </button>
+
+          {loadingImg && <CircularProgress size={32} sx={{ position: "absolute" }} />}
+        </div>
+
+        : <img
+          className='perfume-image'
+          src='images/perfume-icon.png'
+          alt='Genereic perfume image'
+        />
       }
-        alt={image_url
-          ? 'Image of the perfume ' + name + ' by ' + brand
-          : 'Genereic perfume image'
-        }
-      />
 
       <div className="perfume-infos-box">
         <p>ID: {id}</p>
@@ -125,6 +142,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
           size='small'
           variant='outlined'
           onClick={() => perfumeForm.open(perfume)}
+          disabled={searching}
         >
           Edit
         </Button>
@@ -134,6 +152,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
           variant='outlined'
           color='error'
           onClick={handleRemove}
+          disabled={searching}
         >
           Remove
         </Button>
@@ -151,9 +170,8 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
       {deleting && <div className="delete-overlay">
         <CircularProgress size={20} />
-      </div>
-      }
+      </div>}
 
-    </div>
+    </div >
   );
 }
