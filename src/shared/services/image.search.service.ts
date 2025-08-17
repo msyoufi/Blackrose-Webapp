@@ -3,9 +3,9 @@ import { API_KEY, SEARCH_ENGINE_ID } from "../../secrets/search-engine.api-key";
 const baseURL = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&q=`;
 
 export async function findImageUrl(perfume: Perfume): Promise<string> {
-  const { brand, name, concentration } = perfume;
+  const { brand, name, concentration, sex } = perfume;
 
-  const query = [name, brand, concentration].join(' ');
+  const query = [name, brand, concentration, sex].join(' ');
   const searchUrl = baseURL + encodeURIComponent(query);
 
   const response = await fetch(searchUrl);
