@@ -15,21 +15,21 @@
   }
 }
 
-.search-filter-wrapper {
+.search-filters-wrapper {
   display: flex;
   flex-direction: column;
   min-width: 25rem;
   gap: 1rem;
 }
 
-.collection-display-box {
+.filters-box {
   display: grid;
-  grid-template-columns: 7.5rem auto;
-  align-items: center;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
 .counter-display {
+  margin-left: .5rem;
   font-weight: 600;
 }
 

@@ -4,9 +4,9 @@ import PerfumesGridHeader from './perfumes-grid-header/perfumes-grid-header';
 import PerfumeItem from './perfume-item/perfume-item';
 import Paginator from '../../shared/components/paginator';
 import { matchString } from '../../shared/utils/utils';
-import './perfumes-grid.scss';
 import { CollectionSelectProvider } from '../../shared/components/collection-select-form';
 import { CircularProgress } from '@mui/material';
+import './perfumes-grid.scss';
 
 const PER_PAGE = 20;
 
@@ -17,6 +17,7 @@ export default function PerfumesGrid() {
   const [pagesCount, setPagesCount] = useState(0);
   const [searchValue, setSearchValue] = useState<string>('');
   const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
+  const [sex, setSex] = useState<PerfumeSex | 'All'>('All');
   const [perfumesCount, setPerfumesCount] = useState(0);
   const [page, setPage] = useState(1);
 
@@ -26,10 +27,15 @@ export default function PerfumesGrid() {
       ? allPerfumes.slice()
       : allPerfumes.filter(p => p.collection === collection);
 
+    // handle sex selection
+    const sexFiltered = sex === 'All'
+      ? collectionPerfumes
+      : collectionPerfumes.filter(p => p.sex === sex);
+
     // handle search query
     const foundPerfumes = searchValue === ''
-      ? collectionPerfumes
-      : collectionPerfumes.filter(({ brand, name, fragrance_type }) =>
+      ? sexFiltered
+      : sexFiltered.filter(({ brand, name, fragrance_type }) =>
         [brand, name, fragrance_type]
           .map(val => matchString(val, searchValue))
           .some(result => result)
@@ -42,7 +48,7 @@ export default function PerfumesGrid() {
     setPerfumesCount(foundPerfumes.length);
     setPagesCount(Math.ceil(foundPerfumes.length / PER_PAGE));
 
-  }, [page, allPerfumes, searchValue, collection]);
+  }, [page, allPerfumes, searchValue, collection, sex]);
 
   return (
     <div>
@@ -53,6 +59,8 @@ export default function PerfumesGrid() {
           setSearchValue={setSearchValue}
           collection={collection}
           setCollection={setCollection}
+          sex={sex}
+          setSex={setSex}
           setPage={setPage}
           perfumesCount={perfumesCount}
         />

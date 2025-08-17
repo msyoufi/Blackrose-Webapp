@@ -3,6 +3,7 @@ import { Button, TextField } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import CollectionSelectMenu from '../../../shared/components/collection-select-menu';
 import CreatePDFButton from './create-pdf-button';
+import SexSelectMenu from '../../../shared/components/sex-select-menu';
 import './perfumes-grid-header.scss';
 
 export default function PerfumesGridHeader({
@@ -11,6 +12,8 @@ export default function PerfumesGridHeader({
   setSearchValue,
   collection,
   setCollection,
+  sex,
+  setSex,
   perfumesCount,
   setPage
 }: {
@@ -19,6 +22,8 @@ export default function PerfumesGridHeader({
   setSearchValue: (val: string) => void,
   collection: PerfumeCollection | 'All',
   setCollection: (val: PerfumeCollection | 'All') => void,
+  sex: PerfumeSex | 'All',
+  setSex: (val: PerfumeSex | 'All') => void,
   perfumesCount: number,
   setPage: (val: number) => void,
 }) {
@@ -35,9 +40,14 @@ export default function PerfumesGridHeader({
     return () => clearTimeout(timeoutId);
   }, [query])
 
-  function handleCollectionChange(collection: PerfumeCollection | "All"): void {
-    setPage(1);
+  function handleCollectionChange(collection: PerfumeCollection | 'All'): void {
     setCollection(collection);
+    setPage(1);
+  }
+
+  function handleSexChange(sex: PerfumeSex | 'All'): void {
+    setSex(sex);
+    setPage(1);
   }
 
   return (
@@ -50,22 +60,28 @@ export default function PerfumesGridHeader({
         <CreatePDFButton allPerfumes={allPerfumes} />
       </div>
 
-      <div className="search-filter-wrapper">
+      <div className="search-filters-wrapper">
         <TextField type='search' size='small' placeholder='Name, Brand or Fragrance type'
           value={query}
           onInput={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />
 
-        <div className="collection-display-box">
+        <div className="filters-box">
           <CollectionSelectMenu
             collection={collection}
             onChange={handleCollectionChange}
           />
 
-          <span className='counter-display'>
-            {(searchValue ? `"${searchValue}": ` : 'All: ') + perfumesCount}
-          </span>
+          <SexSelectMenu
+            value={sex}
+            onChange={handleSexChange}
+          />
         </div>
+
+        <span className='counter-display'>
+          {(searchValue ? `"${searchValue}": ` : 'All: ') + perfumesCount}
+        </span>
+
       </div>
     </div>
   );
