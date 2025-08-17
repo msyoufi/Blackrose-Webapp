@@ -126,21 +126,21 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
           <div className="controls-grid">
             <TextField
-              id='brand'
-              name='brand'
-              label='Brand'
-              size='small'
-              value={brand}
-              required autoFocus
-            />
-
-            <TextField
               id='name'
               name='name'
               label='Name'
               size='small'
               value={name}
               required
+            />
+
+            <TextField
+              id='brand'
+              name='brand'
+              label='Brand'
+              size='small'
+              value={brand}
+              required autoFocus
             />
 
             <TextField
