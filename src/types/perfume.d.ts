@@ -6,6 +6,7 @@ interface Perfume {
   sex: PerfumeSex,
   concentration: FragranceConcentration,
   fragrance_type: string,
+  inspired_by: string,
   size: number,
   price: number,
   image_url: string

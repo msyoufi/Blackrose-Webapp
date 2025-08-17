@@ -26,7 +26,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, collection, sex, concentration, fragrance_type, size, price } = formData;
+  const { id, brand, name, collection, sex, concentration, fragrance_type, inspired_by, size, price } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -196,6 +196,14 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             />
 
             <TextField
+              id='inspired_by'
+              name='inspired_by'
+              label='Inspired By'
+              size='small'
+              value={inspired_by}
+            />
+
+            <TextField
               id='size'
               name='size'
               type='number'
@@ -259,6 +267,7 @@ const NewPerfume: PerfumeFormData = {
   collection: '',
   concentration: '',
   fragrance_type: '',
+  inspired_by: '',
   size: '',
   price: '',
   image_url: ''
