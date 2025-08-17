@@ -6,7 +6,8 @@ import { formatCurrency, sortByKey } from '../utils/utils';
 // Use the methode bellow 'downloadAllImagesAsDataUrl' to download the images first.
 export async function generatePerfumesPDF(
   perfumes: Perfume[],
-  collection: PerfumeCollection | 'All'
+  collection: PerfumeCollection | 'All',
+  sex: PerfumeSex | 'All'
 ): Promise<void> {
   const doc = new jsPDF({ unit: 'em', format: 'A6' });
 
@@ -15,21 +16,22 @@ export async function generatePerfumesPDF(
 
   doc.setFont('helvetica', 'normal');
 
-  writeCoverPage(doc, pageWidth, pageHeight, collection);
+  writeCoverPage(doc, pageWidth, pageHeight, collection, sex);
 
   // add perfumes beggining from the seconde page
   doc.addPage();
 
   writePerfumes(doc, pageWidth, pageHeight, perfumes);
 
-  doc.save(`${collection} Perfumes.pdf`);
+  doc.save(`${collection}_${sex}_Perfumes.pdf`);
 }
 
 function writeCoverPage(
   doc: jsPDF,
   pageWidth: number,
   pageHeight: number,
-  collection: PerfumeCollection | 'All'
+  collection: PerfumeCollection | 'All',
+  sex: PerfumeSex | 'All'
 ): void {
   const center = pageWidth / 2;
 
@@ -40,12 +42,18 @@ function writeCoverPage(
   const logoWidth = 9
   doc.addImage(logo, 'JPG', (pageWidth - logoWidth) / 2, 3, logoWidth, logoWidth);
 
-  // set title
+  // set collection
   doc.setFontSize(14);
   let title = collection + ' Perfumes';
   if (collection === 'Private')
     title = title.replace(' ', ' Collection ');
   doc.text(title, center, 14, { align: 'center' });
+
+  // set sex
+  if (sex !== 'All') {
+    doc.setFontSize(12);
+    doc.text(sex, center, 15.5, { align: 'center' });
+  }
 
   // set contact infos
   doc.setFontSize(10);

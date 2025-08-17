@@ -1,39 +1,42 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
 import { Button } from '@mui/material';
 import CollectionSelectMenu from './collection-select-menu';
+import SexSelectMenu from './sex-select-menu';
 
-const CollectionSelectContext = createContext<CollectionSelectContext | null>(null);
+const PDFConfigContext = createContext<PDFConfigContext | null>(null);
 
-export function useCollectionSelect(): CollectionSelectContext {
-  const context = useContext(CollectionSelectContext);
-  if (!context) throw new Error('Collection select form must be used inside a context');
+export function usePDFConfigForm(): PDFConfigContext {
+  const context = useContext(PDFConfigContext);
+  if (!context) throw new Error('PDF config form must be used inside a context');
 
   return context;
 }
 
-export function CollectionSelectProvider({ children }: { children: ReactNode }) {
+export function PDFConfigFormProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [collection, setCollection] = useState<PerfumeCollection | 'All'>('All');
-  const [resolvePromise, setResolvePromise] = useState<((answer: PerfumeCollection | 'All' | null) => void) | null>(null);
+  const [sex, setSex] = useState<PerfumeSex | 'All'>('All');
+  const [resolvePromise, setResolvePromise] = useState<((answer: PDFConfig | null) => void) | null>(null);
 
   const ask = useCallback(() => {
     setOpen(true);
 
-    return new Promise<PerfumeCollection | 'All'>(resolve => {
+    return new Promise<PDFConfig>(resolve => {
       setResolvePromise(() => resolve);
     });
   }, []);
 
-  function handleClose(answer: PerfumeCollection | 'All' | null): void {
+  function handleClose(answer: PDFConfig | null): void {
     resolvePromise && resolvePromise(answer);
 
     setOpen(false);
     setCollection('All');
+    setSex('All');
     setResolvePromise(null);
   }
 
   return (
-    <CollectionSelectContext value={{ ask }} >
+    <PDFConfigContext value={{ ask }} >
       {children}
 
       {open && <div className="overlay">
@@ -56,6 +59,12 @@ export function CollectionSelectProvider({ children }: { children: ReactNode }) 
             required={true}
           />
 
+          <SexSelectMenu
+            value={sex}
+            onChange={setSex}
+            required={true}
+          />
+
           <div
             style={{
               display: 'flex',
@@ -65,7 +74,7 @@ export function CollectionSelectProvider({ children }: { children: ReactNode }) 
             <Button
               type='button'
               variant='contained'
-              onClick={() => handleClose(collection)}
+              onClick={() => handleClose({ sex, collection })}
             >
               Create PDF
             </Button >
@@ -81,6 +90,6 @@ export function CollectionSelectProvider({ children }: { children: ReactNode }) 
           </div>
         </form>
       </div >}
-    </CollectionSelectContext>
+    </PDFConfigContext>
   );
 }

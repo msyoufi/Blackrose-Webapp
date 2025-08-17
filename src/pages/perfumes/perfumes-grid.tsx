@@ -4,7 +4,7 @@ import PerfumesGridHeader from './perfumes-grid-header/perfumes-grid-header';
 import PerfumeItem from './perfume-item/perfume-item';
 import Paginator from '../../shared/components/paginator';
 import { matchString } from '../../shared/utils/utils';
-import { CollectionSelectProvider } from '../../shared/components/collection-select-form';
+import { PDFConfigFormProvider } from '../../shared/components/pdf-config-form';
 import { CircularProgress } from '@mui/material';
 import './perfumes-grid.scss';
 
@@ -52,7 +52,7 @@ export default function PerfumesGrid() {
 
   return (
     <div>
-      <CollectionSelectProvider>
+      <PDFConfigFormProvider>
         <PerfumesGridHeader
           allPerfumes={allPerfumes}
           searchValue={searchValue}
@@ -64,7 +64,7 @@ export default function PerfumesGrid() {
           setPage={setPage}
           perfumesCount={perfumesCount}
         />
-      </CollectionSelectProvider>
+      </PDFConfigFormProvider>
 
       {loadingPerfumes
 

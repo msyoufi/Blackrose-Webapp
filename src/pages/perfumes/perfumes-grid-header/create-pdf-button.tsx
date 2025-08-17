@@ -2,31 +2,35 @@ import { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { downloadAllImagesAsDataUrl, generatePerfumesPDF } from '../../../shared/services/pdf.service';
-import { useCollectionSelect } from '../../../shared/components/collection-select-form';
+import { usePDFConfigForm } from '../../../shared/components/pdf-config-form';
 
-export default function CreatePDFButton({ allPerfumes }: { allPerfumes: Perfume[] }) {
+export default function CreatePDFButton({ perfumes }: { perfumes: Perfume[] }) {
   const [loading, setLoading] = useState(false);
 
-  const collectionSelectForm = useCollectionSelect();
+  const collectionSelectForm = usePDFConfigForm();
   const snackbar = useSnackbar();
 
   async function handleClick(): Promise<void> {
-    const collection = await collectionSelectForm.ask();
-    if (!collection) return;
+    const pdfConfig = await collectionSelectForm.ask();
+    if (!pdfConfig) return;
 
-    const perfumes = collection === 'All'
-      ? allPerfumes
-      : allPerfumes.filter(p => p.collection === collection);
+    const { sex, collection } = pdfConfig;
+
+    if (collection !== 'All')
+      perfumes = perfumes.filter(p => p.collection === collection);
+
+    if (sex !== 'All')
+      perfumes = perfumes.filter(p => p.sex === sex);
 
     if (!perfumes.length) {
-      return snackbar.show(`'${collection}' collection empty`, 'warning');
+      return snackbar.show(`${collection} collection for ${sex} is empty`, 'warning');
     }
 
     setLoading(true);
 
     try {
       const perfumesWithImages = await downloadAllImagesAsDataUrl(perfumes);
-      await generatePerfumesPDF(perfumesWithImages, collection);
+      await generatePerfumesPDF(perfumesWithImages, collection, sex);
 
       snackbar.show('PDF created successfully');
 

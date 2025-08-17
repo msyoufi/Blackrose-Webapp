@@ -57,7 +57,7 @@ export default function PerfumesGridHeader({
           New Perfume +
         </Button >
 
-        <CreatePDFButton allPerfumes={allPerfumes} />
+        <CreatePDFButton perfumes={allPerfumes.slice()} />
       </div>
 
       <div className="search-filters-wrapper">
