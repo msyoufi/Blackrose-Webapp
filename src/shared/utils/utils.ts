@@ -1,7 +1,7 @@
 export function sortByKey<T>(
   arr: T[],
   key: keyof T,
-  reversed: boolean
+  reversed: boolean = false
 ): T[] {
   if (!arr.length)
     return [];
