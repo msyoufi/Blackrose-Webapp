@@ -183,7 +183,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               select
             >
               {FragranceConcentrations.map((option, i) =>
-                <MenuItem key={i} value={option}>{option}</MenuItem>
+                <MenuItem key={i} value={option}>{option || 'N/A'}</MenuItem>
               )}
             </TextField>
 

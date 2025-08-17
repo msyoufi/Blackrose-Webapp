@@ -7,6 +7,7 @@ export const FragranceConcentrations: FragranceConcentration[] = [
   'Eau de Toilette',
   'Eau de Parfum',
   'Parfum',
+  'Intense',
   'Elixir',
   'Eau de Cologne',
   'Eau Fraiche',
