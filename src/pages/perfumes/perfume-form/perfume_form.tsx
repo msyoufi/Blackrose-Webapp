@@ -131,7 +131,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               label='Name'
               size='small'
               value={name}
-              required
+              required autoFocus
             />
 
             <TextField
@@ -140,7 +140,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               label='Brand'
               size='small'
               value={brand}
-              required autoFocus
+              required
             />
 
             <TextField
