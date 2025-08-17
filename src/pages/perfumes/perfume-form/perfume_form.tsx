@@ -210,7 +210,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               id='price'
               name='price'
               type='number'
-              label='Price (1000 USh)'
+              label='Price (1000 UGX)'
               size='small'
               value={price}
               slotProps={{ htmlInput: { min: 1, value: price === 0 ? '' : price } }}

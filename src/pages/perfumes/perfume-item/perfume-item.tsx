@@ -134,7 +134,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
         <p>ID: {id}</p>
         <p>{name} - {brand}</p>
         <p>{concentration} - {sex}</p>
-        <p>{size} ml | {formatCurrency(price)} USh</p>
+        <p>{size} ml | {formatCurrency(price)} UGX</p>
       </div>
 
       <div className="perfume-buttons-box">

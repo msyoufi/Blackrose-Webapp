@@ -130,7 +130,7 @@ function writePerfumes(
     doc.text(brand, xtext, ytext + nameLines.length + .5);
 
     doc.setFontSize(10);
-    doc.text(`${size} ml - ${formatCurrency(price)} USh`, xtext, ytext + 4);
+    doc.text(`${size} ml - ${formatCurrency(price)} UGX`, xtext, ytext + 4);
 
     // draw a border
     doc.setLineWidth(0.05)
