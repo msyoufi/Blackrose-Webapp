@@ -68,7 +68,7 @@ export default function PerfumesGridHeader({
 
         <div className="filters-box">
           <CollectionSelectMenu
-            collection={collection}
+            value={collection}
             onChange={handleCollectionChange}
           />
 
