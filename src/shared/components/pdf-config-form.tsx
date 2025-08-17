@@ -50,7 +50,7 @@ export function PDFConfigFormProvider({ children }: { children: ReactNode }) {
           }}
         >
           <p>
-            Please Select a Collection
+            Select Collection and sex
           </p>
 
           <CollectionSelectMenu
