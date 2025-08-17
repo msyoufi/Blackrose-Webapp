@@ -1,4 +1,4 @@
-import { type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { Button, TextField } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
 import CollectionSelectMenu from '../../../shared/components/collection-select-menu';
@@ -22,13 +22,18 @@ export default function PerfumesGridHeader({
   perfumesCount: number,
   setPage: (val: number) => void,
 }) {
+  const [query, setQuery] = useState('');
   const perfumeForm = usePerfumeForm();
 
-  function handleSearch(e: ChangeEvent<HTMLInputElement>): void {
-    const query = e.target.value;
-    setSearchValue(query);
-    setPage(1);
-  }
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSearchValue(query);
+      setPage(1);
+
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [query])
 
   function handleCollectionChange(collection: PerfumeCollection | "All"): void {
     setPage(1);
@@ -47,8 +52,8 @@ export default function PerfumesGridHeader({
 
       <div className="search-filter-wrapper">
         <TextField type='search' size='small' placeholder='Name, Brand or Fragrance type'
-          value={searchValue}
-          onInput={handleSearch}
+          value={query}
+          onInput={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         />
 
         <div className="collection-display-box">
