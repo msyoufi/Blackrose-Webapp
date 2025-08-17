@@ -1,9 +1,9 @@
-import jsPDF from "jspdf";
-import { downloadImage } from "./images.storage.service";
-import { formatCurrency } from "../utils/utils";
+import jsPDF from 'jspdf';
+import { downloadImage } from './images.storage.service';
+import { formatCurrency, sortByKey } from '../utils/utils';
 
 // The image_url property of the passed perfumes must be a Data URL and NOT a download URL!!!!
-// Use the methode bellow "downloadAllImagesAsDataUrl" to download the images first.
+// Use the methode bellow 'downloadAllImagesAsDataUrl' to download the images first.
 export async function generatePerfumesPDF(
   perfumes: Perfume[],
   collection: PerfumeCollection | 'All'
@@ -12,6 +12,8 @@ export async function generatePerfumesPDF(
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
+
+  doc.setFont('helvetica', 'normal');
 
   writeCoverPage(doc, pageWidth, pageHeight, collection);
 
@@ -30,27 +32,56 @@ function writeCoverPage(
   collection: PerfumeCollection | 'All'
 ): void {
   const center = pageWidth / 2;
+
+  // draw logo
+  const logo = document.createElement('img');
+  logo.src = 'images/blackrose-logo.jpg';
+  // the logo is quadratic
+  const logoWidth = 9
+  doc.addImage(logo, 'JPG', (pageWidth - logoWidth) / 2, 3, logoWidth, logoWidth);
+
+  // set title
+  doc.setFontSize(14);
   let title = collection + ' Perfumes';
   if (collection === 'Private')
     title = title.replace(' ', ' Collection ');
+  doc.text(title, center, 14, { align: 'center' });
 
-  // TODO
-  // doc.setFont('helvetica', 'bold', 600);
-  doc.setFontSize(20);
-  doc.text('Black Rose', center, 7, { align: 'center' });
+  // set contact infos
+  doc.setFontSize(10);
+  const x = 8;
+  const y = 17;
 
-  doc.setFontSize(16);
-  doc.text(title, center, 10, { align: 'center' });
+  const locationLogo = document.createElement('img');
+  locationLogo.src = 'images/location-icon.png';
+  doc.addImage(locationLogo, 'PNG', x - 1.5, y + .3, 1, 1);
 
-  doc.setFontSize(12);
-  // TODO
-  const address1 = 'address row 1';
-  const address2 = 'address row 2';
-  doc.text(address1, center, 16, { align: 'center' });
-  doc.text(address2, center, 17.75, { align: 'center' });
+  const address1 = 'Acacia Mall';
+  doc.text(address1, x, y + .6);
 
-  doc.setFontSize(8);
-  doc.text(new Date().toDateString(), pageWidth - 9, pageHeight - 3);
+  const address2 = 'Main Entrance - Opposite KFC';
+  doc.text(address2, x, y + 1.5);
+
+  const whatsappLogo = document.createElement('img');
+  whatsappLogo.src = 'images/whatsapp-icon.png';
+  doc.addImage(whatsappLogo, 'PNG', x - 1.5, y + 2.1, 1, 1);
+
+  const phoneNumber = '0744749099';
+  doc.text(phoneNumber, x, y + 2.85);
+
+  const instagramLogo = document.createElement('img');
+  instagramLogo.src = 'images/insta-icon.png';
+  doc.addImage(instagramLogo, 'PNG', x - 1.35, y + 3.6, .7, .7);
+
+  const instagram = '@blackroseperfumes_ug';
+  doc.text(instagram, x, y + 4.2);
+
+  const flaconImg = document.createElement('img');
+  flaconImg.src = 'images/flacon-photo.png';
+  doc.addImage(flaconImg, 'PNG', 2, pageHeight - 8, 7, 7);
+
+  doc.setFontSize(7);
+  doc.text(new Date().toDateString(), pageWidth - 7, pageHeight - 2.2);
 }
 
 function writePerfumes(
@@ -62,36 +93,41 @@ function writePerfumes(
   const margin = 1;
   const itemHeight = 10;
   const itemWidth = pageWidth - margin * 2;
-  const imgHeight = itemHeight - margin * 2;
-  const imgWidth = imgHeight;
   let x = margin;
-  let xtext = imgWidth + margin;
+  let xtext = 9;
   let y = margin;
   let ytext = margin * 4;
 
   // create a default image in case perfume image is not provided
-  const defaultImage = document.createElement('img');
+  const defaultImage = new Image();
   defaultImage.src = 'images/perfume-icon.png';
 
-  const lastItem = perfumes.length - 1;
+  const sortedPerfumes = sortByKey(perfumes, 'sex');
+  const lastIndex = sortedPerfumes.length - 1;
 
-  perfumes.forEach((perfume, i) => {
+  sortedPerfumes.forEach((perfume, i) => {
     const { name, brand, size, price, image_url } = perfume;
 
     if (image_url) {
-      doc.addImage(image_url, 'WEBP', x, y + 1, imgWidth, imgHeight);
+      const { width: imgWidth, height: imgHeight, fileType } = doc.getImageProperties(image_url);
+
+      const ratio = imgWidth / imgHeight;
+      const displayHeight = itemHeight - margin * 2;
+      const displayWidth = displayHeight * ratio;
+
+      doc.addImage(image_url, fileType, x, y + 1, displayWidth, displayHeight);
 
     } else {
-      doc.addImage(defaultImage, 'PNG', x, y + 1, imgWidth, imgHeight);
+      const imgHeight = itemHeight - margin * 2;
+      doc.addImage(defaultImage, 'PNG', x, y + 1, imgHeight, imgHeight);
     }
 
-    // TODO
-    // doc.setFont('helvetica', 'bold', 600);
-    doc.setFontSize(13);
-    doc.text(name, xtext, ytext);
+    doc.setFontSize(12);
+    const nameLines = doc.splitTextToSize(name, itemWidth - 9);
+    doc.text(nameLines, xtext, ytext);
 
-    doc.setFontSize(11);
-    doc.text(brand, xtext, ytext + 1.5);
+    doc.setFontSize(10);
+    doc.text(brand, xtext, ytext + nameLines.length + .5);
 
     doc.setFontSize(10);
     doc.text(`${size} ml - ${formatCurrency(price)} USh`, xtext, ytext + 4);
@@ -105,7 +141,7 @@ function writePerfumes(
     ytext += itemHeight + margin;
 
     // Add new page if beyond bottom margin and still items in the list
-    if (y + itemHeight > pageHeight && i < lastItem) {
+    if (y + itemHeight > pageHeight && i < lastIndex) {
       doc.addPage();
       y = margin;
       ytext = margin * 4;
