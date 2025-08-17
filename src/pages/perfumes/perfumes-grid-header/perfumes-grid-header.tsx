@@ -46,7 +46,7 @@ export default function PerfumesGridHeader({
       </div>
 
       <div className="search-filter-wrapper">
-        <TextField type='search' size='small' placeholder='Search Name or Brand'
+        <TextField type='search' size='small' placeholder='Name, Brand or Fragrance type'
           value={searchValue}
           onInput={handleSearch}
         />

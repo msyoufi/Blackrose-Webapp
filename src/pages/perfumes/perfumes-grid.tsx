@@ -21,19 +21,22 @@ export default function PerfumesGrid() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    // handle collection selection
     const collectionPerfumes = collection === 'All'
       ? allPerfumes.slice()
       : allPerfumes.filter(p => p.collection === collection);
 
+    // handle search query
     const foundPerfumes = searchValue === ''
-      ? collectionPerfumes.slice()
-      : collectionPerfumes.filter(({ brand, name }) =>
-        matchString(brand, searchValue) || matchString(name, searchValue)
+      ? collectionPerfumes
+      : collectionPerfumes.filter(({ brand, name, fragrance_type }) =>
+        [brand, name, fragrance_type]
+          .map(val => matchString(val, searchValue))
+          .some(result => result)
       );
 
     const start = (page - 1) * PER_PAGE;
     const paginated = foundPerfumes.slice(start, start + PER_PAGE);
-
 
     setDisplayPerfumes(paginated);
     setPerfumesCount(foundPerfumes.length);
