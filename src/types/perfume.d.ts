@@ -9,7 +9,8 @@ interface Perfume {
   inspired_by: string,
   size: number,
   price: number,
-  image_url: string
+  image_url: string,
+  order: number
 }
 
 type PerfumeSex = 'Men' | 'Women' | 'Unisex';

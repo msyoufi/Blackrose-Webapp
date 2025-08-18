@@ -11,7 +11,7 @@ export function usePerfumes(): [boolean, unknown, Perfume[]] {
 
   useEffect(() => {
     try {
-      const q = query(collection(db, 'perfumes'), orderBy('name'));
+      const q = query(collection(db, 'perfumes'), orderBy('order'));
 
       return onSnapshot(q, querySnapshot => {
         const nextPerfumes: Perfume[] = [];
