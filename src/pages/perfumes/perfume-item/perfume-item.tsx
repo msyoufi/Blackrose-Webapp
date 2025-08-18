@@ -108,7 +108,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
     <div className='perfume-item'>
       <button
         className='order-button'
-        onClick={() => perfumeOrderForm.open(id, order)}
+        onClick={() => perfumeOrderForm.open(perfume)}
       >
         {order}
       </button>

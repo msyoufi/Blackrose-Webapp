@@ -10,11 +10,11 @@ export async function updatePerfume(perfume: Perfume): Promise<void> {
   await updateDoc(getDocRef(perfume.id), perfumeData);
 }
 
-export async function savePerfumeOrder(perfumes: Perfume[]): Promise<void> {
+export async function updatePerfumesOrder(perfumes: Perfume[]): Promise<void> {
   const batch = writeBatch(db);
 
   perfumes.forEach((p, i) =>
-    batch.update(getDocRef(p.id), { order: i })
+    batch.update(getDocRef(p.id), { order: i + 1 })
   );
 
   await batch.commit();

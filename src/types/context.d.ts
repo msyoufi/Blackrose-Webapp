@@ -37,10 +37,7 @@ declare global {
   type PerfumesContext = [Perfume[], unknown, boolean];
 
   interface PerfumeOrderFormContext {
-    open: (
-      perfumeId: string,
-      order: number
-    ) => void,
+    open: (perfume: Perfume) => void,
     close: () => void
   }
 }

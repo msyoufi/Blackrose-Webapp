@@ -1,7 +1,8 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import { usePerfumes } from "../../../shared/context/perfumes.provider";
 import { useSnackbar } from "../../../shared/components/snackbar";
+import { updatePerfumesOrder } from "../../../shared/services/perfume.db.service";
 
 const PerfumeOrderFormContext = createContext<PerfumeOrderFormContext | null>(null);
 
@@ -14,7 +15,7 @@ export function usePerfumeOrderForm(): PerfumeOrderFormContext {
 
 export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) {
   const [formOpen, setFormOpen] = useState(false);
-  const [perfumeId, setPerfumeId] = useState('');
+  const [perfume, setPerfume] = useState<Perfume | null>(null);
   const [order, setOrder] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [formValid, setFormValid] = useState(false);
@@ -23,12 +24,8 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
   const [allPerfumes] = usePerfumes();
   const snackbar = useSnackbar();
 
-  useEffect(() => {
-
-  }, [order]);
-
   function handleChange(e: ChangeEvent<any>): void {
-    const nextOrder = e.target.value;
+    const nextOrder = e.target.valueAsNumber;
 
     setOrder(nextOrder);
     setFormValid(formRef.current?.checkValidity() ?? false);
@@ -39,14 +36,13 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
     setIsLoading(true);
 
     try {
-      console.log(perfumeId)
-      console.log(order)
+      const reordered = reorder();
+      await updatePerfumesOrder(reordered);
 
       snackbar.show('New Order Saved');
       close();
 
     } catch (err: unknown) {
-      console.log(err);
       snackbar.show('Cannot reorder the perfumes', 'error', 4000);
 
     } finally {
@@ -54,15 +50,35 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
     }
   }
 
-  const open = useCallback((perfumeId: string, order: number) => {
-    setPerfumeId(perfumeId);
-    setOrder(order);
+  // Orders the perfume each in its own collection
+  function reorder(): Perfume[] {
+    if (!perfume) throw new Error('Perfume not found');
+
+    const { id, collection } = perfume;
+
+    const collectionPerfumes = allPerfumes.filter(p => p.collection === collection);
+
+    const currIndex = collectionPerfumes.findIndex(p => p.id === id);
+    if (currIndex < 0) throw new Error('Perfume not found');
+
+    // clamp newIndex
+    const newIndex = Math.max(0, Math.min(order - 1, collectionPerfumes.length));
+
+    const [moved] = collectionPerfumes.splice(currIndex, 1);
+    collectionPerfumes.splice(newIndex, 0, moved);
+
+    return collectionPerfumes;
+  }
+
+  const open = useCallback((perfume: Perfume) => {
+    setPerfume(perfume);
+    setOrder(perfume.order);
     setFormOpen(true);
   }, []);
 
   const close = useCallback(() => {
     setFormOpen(false);
-    setPerfumeId('');
+    setPerfume(null);
     setOrder(0);
     setFormValid(false);
   }, []);
@@ -83,7 +99,7 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
           }}
         >
           <div className="form-header">
-            <p>Select Order</p>
+            <p>Set a New Order</p>
 
             <Button type='reset' onClick={close} disabled={isLoading}>
               X
@@ -94,13 +110,13 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
             id='order'
             name='order'
             type='number'
-            label='Order'
+            label='New Order'
             size='small'
             value={order || ''}
             slotProps={{
               htmlInput: {
                 min: 1,
-                max: allPerfumes.length + 1
+                max: allPerfumes.length
               }
             }}
             onChange={handleChange}
@@ -108,12 +124,21 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
           />
 
           <div className="buttons-bar">
-            <Button type='submit' disabled={!formValid || isLoading}>
-              {isLoading ? <CircularProgress size={20} /> : 'Save'}
+            <Button
+              type='reset'
+              variant='outlined'
+              onClick={close} disabled={isLoading}
+            >
+              Cancle
             </Button>
 
-            <Button type='reset' onClick={close} disabled={isLoading}>
-              Cancle
+            <Button
+              type='submit'
+              variant='contained'
+              color='success'
+              disabled={!formValid || isLoading}
+            >
+              {isLoading ? <CircularProgress size={20} /> : 'Save'}
             </Button>
           </div>
         </form>
