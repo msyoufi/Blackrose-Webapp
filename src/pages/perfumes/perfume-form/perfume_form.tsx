@@ -232,17 +232,19 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
             </div>
 
             <div className="half-input-wrapper"
-              style={{ gridTemplateColumns: '3fr 1fr' }}>
+              style={{ gridTemplateColumns: '3fr 1fr' }}
+            >
               <FormControlLabel
                 label="Image"
                 labelPlacement='start'
-                style={{ margin: 0 }}
+                style={{ margin: 0, paddingLeft: '.5rem' }}
                 control={
                   <TextField
                     id="image"
                     name='image'
                     type='file'
                     size='small'
+                    style={{ marginLeft: 'auto', paddingLeft: '.5rem' }}
                     slotProps={{ htmlInput: { accept: 'image/*' } }}
                   />
                 }
