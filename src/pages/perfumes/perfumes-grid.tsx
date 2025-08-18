@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { usePerfumes } from '../../shared/services/perfume.db.service';
+import { usePerfumes } from '../../shared/context/perfumes.provider';
 import PerfumesGridHeader from './perfumes-grid-header/perfumes-grid-header';
 import PerfumeItem from './perfume-item/perfume-item';
 import Paginator from '../../shared/components/paginator';
@@ -11,7 +11,7 @@ import './perfumes-grid.scss';
 const PER_PAGE = 20;
 
 export default function PerfumesGrid() {
-  const [loadingPerfumes, error, allPerfumes] = usePerfumes();
+  const [allPerfumes, error, loadingPerfumes] = usePerfumes();
 
   const [displayPerfumes, setDisplayPerfumes] = useState<Perfume[]>([]);
   const [pagesCount, setPagesCount] = useState(0);

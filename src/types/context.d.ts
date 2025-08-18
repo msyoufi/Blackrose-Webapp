@@ -33,4 +33,7 @@ declare global {
   interface PDFConfigContext {
     ask: () => Promise<PDFConfig | null>
   }
+
+  type PerfumesContext = [Perfume[], unknown, boolean]
+
 }

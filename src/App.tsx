@@ -4,6 +4,7 @@ import Header from "./shared/components/header/header";
 import { useAuth } from "./shared/context/auth.provider";
 import { CircularProgress } from "@mui/material";
 import AdminLogin from "./pages/admin-login/admin-login";
+import { PerfumesProvider } from "./shared/context/perfumes.provider";
 
 export default function App() {
   const { user, loading } = useAuth();
@@ -17,14 +18,16 @@ export default function App() {
   if (!user) return <AdminLogin />;
 
   return (
-    <PerfumeFormProvider>
+    <PerfumesProvider>
+      <PerfumeFormProvider>
 
-      <Header />
+        <Header />
 
-      <main>
-        <Outlet />
-      </main>
+        <main>
+          <Outlet />
+        </main>
 
-    </PerfumeFormProvider>
+      </PerfumeFormProvider>
+    </PerfumesProvider>
   );
 }
