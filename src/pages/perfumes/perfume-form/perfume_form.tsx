@@ -100,6 +100,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const close = useCallback(() => {
     setFormOpen(false);
     setImgFile(null);
+    setFormValid(false);
   }, []);
 
   const contextValue = useMemo(() => ({ open, close }), [open, close]);
@@ -251,12 +252,21 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
           </div>
 
           <div className="buttons-bar">
-            <Button type='submit' disabled={!formValid || isLoading}>
-              {isLoading ? <CircularProgress size={20} /> : 'Save'}
+            <Button
+              type='reset'
+              variant='outlined'
+              onClick={close} disabled={isLoading}
+            >
+              Cancle
             </Button>
 
-            <Button type='reset' onClick={close} disabled={isLoading}>
-              Cancle
+            <Button
+              type='submit'
+              color='success'
+              variant='contained'
+              disabled={!formValid || isLoading}
+            >
+              {isLoading ? <CircularProgress size={20} /> : 'Save'}
             </Button>
           </div>
 

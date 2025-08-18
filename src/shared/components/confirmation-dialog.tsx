@@ -52,15 +52,17 @@ export function ConfirmationDialogProvider({ children }: { children: ReactNode }
 
         <DialogActions>
           <Button
-            onClick={() => handleClose(true)}
             variant='outlined'
-            color='error'
-          >
-            {action}
+            onClick={() => handleClose(false)}>
+            Cancel
           </Button>
 
-          <Button onClick={() => handleClose(false)}            >
-            Cancel
+          <Button
+            variant='contained'
+            color='error'
+            onClick={() => handleClose(true)}
+          >
+            {action}
           </Button>
         </DialogActions>
       </Dialog>

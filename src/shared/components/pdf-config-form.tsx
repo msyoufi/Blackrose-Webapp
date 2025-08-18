@@ -74,6 +74,7 @@ export function PDFConfigFormProvider({ children }: { children: ReactNode }) {
             <Button
               type='button'
               variant='contained'
+              color='success'
               onClick={() => handleClose({ sex, collection })}
             >
               Create PDF
@@ -82,7 +83,6 @@ export function PDFConfigFormProvider({ children }: { children: ReactNode }) {
             <Button
               type='reset'
               variant='outlined'
-              color='warning'
               onClick={() => handleClose(null)}
             >
               Cancle

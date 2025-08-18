@@ -26,7 +26,7 @@ export default function Header() {
 
       <Button
         className='auth-button'
-        variant='contained'
+        variant='outlined'
         color='error'
         onClick={handleClick}
       >
