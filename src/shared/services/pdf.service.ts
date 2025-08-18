@@ -110,10 +110,9 @@ function writePerfumes(
   const defaultImage = new Image();
   defaultImage.src = 'images/perfume-icon.png';
 
-  const sortedPerfumes = sortByKey(perfumes, 'sex');
-  const lastIndex = sortedPerfumes.length - 1;
+  const lastIndex = perfumes.length - 1;
 
-  sortedPerfumes.forEach((perfume, i) => {
+  perfumes.forEach((perfume, i) => {
     const { name, brand, size, price, image_url } = perfume;
 
     if (image_url) {
