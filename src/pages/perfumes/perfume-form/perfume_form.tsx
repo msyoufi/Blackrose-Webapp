@@ -20,6 +20,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const [formData, setFormData] = useState<Perfume | PerfumeFormData>(NewPerfume);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [formValid, setFormValid] = useState(false);
 
 
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -40,6 +41,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       return setImgFile(file);
     }
 
+    setFormValid(formRef.current?.checkValidity() ?? false);
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
@@ -214,8 +216,8 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
                 type='number'
                 label='Size (ml)'
                 size='small'
-                value={size}
-                slotProps={{ htmlInput: { min: 1, value: size === 0 ? '' : size } }}
+                value={size || ''}
+                slotProps={{ htmlInput: { min: 1 } }}
                 required
               />
 
@@ -225,8 +227,8 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
                 type='number'
                 label='Price (1000 UGX)'
                 size='small'
-                value={price}
-                slotProps={{ htmlInput: { min: 1, value: price === 0 ? '' : price } }}
+                value={price || ''}
+                slotProps={{ htmlInput: { min: 1 } }}
                 required
               />
             </div>
@@ -256,15 +258,15 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
                 type='number'
                 label='Order'
                 size='small'
-                value={order}
-                slotProps={{ htmlInput: { min: 1, value: order === 0 ? '' : order } }}
+                value={order || ''}
+                slotProps={{ htmlInput: { min: 1 } }}
                 required
               />
             </div>
           </div>
 
           <div className="buttons-bar">
-            <Button type='submit' disabled={!formRef.current?.checkValidity() || isLoading}>
+            <Button type='submit' disabled={!formValid || isLoading}>
               {isLoading ? <CircularProgress size={20} /> : 'Save'}
             </Button>
 
