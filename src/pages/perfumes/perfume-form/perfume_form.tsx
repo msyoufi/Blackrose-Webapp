@@ -16,7 +16,7 @@ export function usePerfumeForm(): PerfumeFormContext {
 }
 
 export function PerfumeFormProvider({ children }: { children: ReactNode }) {
-  const [formOpen, setFormOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(true);
   const [formData, setFormData] = useState<Perfume | PerfumeFormData>(NewPerfume);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, collection, sex, concentration, fragrance_type, inspired_by, size, price } = formData;
+  const { id, brand, name, collection, sex, concentration, fragrance_type, inspired_by, size, price, order } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -134,44 +134,56 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               required autoFocus
             />
 
-            <TextField
-              id='brand'
-              name='brand'
-              label='Brand'
-              size='small'
-              value={brand}
-              required
-            />
+            <div className="half-input-wrapper">
+              <TextField
+                id='brand'
+                name='brand'
+                label='Brand'
+                size='small'
+                value={brand}
+                required
+              />
 
-            <TextField
-              id='collection'
-              name='collection'
-              label='Collection'
-              size='small'
-              value={collection}
-              onChange={handleChange}
-              select required
-            >
-              <MenuItem key={0} value='' disabled hidden></MenuItem>
-              {PerfumeCollection.map(option =>
-                <MenuItem key={option} value={option}>{option}</MenuItem>
-              )}
-            </TextField>
+              <TextField
+                id='inspired_by'
+                name='inspired_by'
+                label='Inspired By'
+                size='small'
+                value={inspired_by}
+              />
+            </div>
 
-            <TextField
-              id='sex'
-              name='sex'
-              label='Sex'
-              size='small'
-              value={sex}
-              onChange={handleChange}
-              select required
-            >
-              <MenuItem key={0} value='' disabled hidden></MenuItem>
-              {PerfumeSex.map(option =>
-                <MenuItem key={option} value={option}>{option}</MenuItem>
-              )}
-            </TextField>
+            <div className="half-input-wrapper">
+              <TextField
+                id='collection'
+                name='collection'
+                label='Collection'
+                size='small'
+                value={collection}
+                onChange={handleChange}
+                select required
+              >
+                <MenuItem key={0} value='' disabled hidden></MenuItem>
+                {PerfumeCollection.map(option =>
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
+                )}
+              </TextField>
+
+              <TextField
+                id='sex'
+                name='sex'
+                label='Sex'
+                size='small'
+                value={sex}
+                onChange={handleChange}
+                select required
+              >
+                <MenuItem key={0} value='' disabled hidden></MenuItem>
+                {PerfumeSex.map(option =>
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
+                )}
+              </TextField>
+            </div>
 
             <TextField
               id='concentration'
@@ -195,51 +207,58 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               value={fragrance_type}
             />
 
-            <TextField
-              id='inspired_by'
-              name='inspired_by'
-              label='Inspired By'
-              size='small'
-              value={inspired_by}
-            />
+            <div className="half-input-wrapper">
+              <TextField
+                id='size'
+                name='size'
+                type='number'
+                label='Size (ml)'
+                size='small'
+                value={size}
+                slotProps={{ htmlInput: { min: 1, value: size === 0 ? '' : size } }}
+                required
+              />
 
-            <TextField
-              id='size'
-              name='size'
-              type='number'
-              label='Size (ml)'
-              size='small'
-              value={size}
-              slotProps={{ htmlInput: { min: 1, value: size === 0 ? '' : size } }}
-              required
-            />
+              <TextField
+                id='price'
+                name='price'
+                type='number'
+                label='Price (1000 UGX)'
+                size='small'
+                value={price}
+                slotProps={{ htmlInput: { min: 1, value: price === 0 ? '' : price } }}
+                required
+              />
+            </div>
 
-            <TextField
-              id='price'
-              name='price'
-              type='number'
-              label='Price (1000 UGX)'
-              size='small'
-              value={price}
-              slotProps={{ htmlInput: { min: 1, value: price === 0 ? '' : price } }}
-              required
-            />
+            <div className="half-input-wrapper"
+              style={{ gridTemplateColumns: '3fr 1fr' }}>
+              <FormControlLabel
+                label="Image"
+                labelPlacement='start'
+                style={{ margin: 0 }}
+                control={
+                  <TextField
+                    id="image"
+                    name='image'
+                    type='file'
+                    size='small'
+                    slotProps={{ htmlInput: { accept: 'image/*' } }}
+                  />
+                }
+              />
 
-            <FormControlLabel
-              label="Image"
-              labelPlacement='start'
-              style={{ margin: 0 }}
-              control={
-                <TextField
-                  id="image"
-                  name='image'
-                  type='file'
-                  size='small'
-                  style={{ marginLeft: 'auto', paddingLeft: '1rem' }}
-                  slotProps={{ htmlInput: { accept: 'image/*' } }}
-                />
-              }
-            />
+              <TextField
+                id='order'
+                name='order'
+                type='number'
+                label='Order'
+                size='small'
+                value={order}
+                slotProps={{ htmlInput: { min: 1, value: order === 0 ? '' : order } }}
+                required
+              />
+            </div>
           </div>
 
           <div className="buttons-bar">
@@ -270,5 +289,6 @@ const NewPerfume: PerfumeFormData = {
   inspired_by: '',
   size: '',
   price: '',
-  image_url: ''
+  image_url: '',
+  order: 0
 };
