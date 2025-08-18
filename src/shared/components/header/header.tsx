@@ -22,7 +22,7 @@ export default function Header() {
         {/* Placeholder div */}
       </div>
 
-      <h1>Black Rose</h1>
+      <img className='header-logo' src='images/blackrose-logo.jpg' alt='Blackrose logo' />
 
       <Button
         className='auth-button'
