@@ -16,18 +16,18 @@ export function usePerfumeForm(): PerfumeFormContext {
 }
 
 export function PerfumeFormProvider({ children }: { children: ReactNode }) {
-  const [formOpen, setFormOpen] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState<Perfume | PerfumeFormData>(NewPerfume);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formValid, setFormValid] = useState(false);
 
-
   const formRef = useRef<HTMLFormElement | null>(null);
   const snackbar = useSnackbar();
 
   const formMode = formData.hasOwnProperty('id') ? 'edit' : 'add';
-  const { id, brand, name, collection, sex, concentration, fragrance_type, inspired_by, size, price, order } = formData;
+
+  const { id, brand, name, collection, sex, concentration, fragrance_type, inspired_by, size, price } = formData;
 
   function handleChange(e: ChangeEvent<any>): void {
     let { name, value, valueAsNumber, type } = e.target;
@@ -233,36 +233,21 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
               />
             </div>
 
-            <div className="half-input-wrapper"
-              style={{ gridTemplateColumns: '3fr 1fr' }}
-            >
-              <FormControlLabel
-                label="Image"
-                labelPlacement='start'
-                style={{ margin: 0, paddingLeft: '.5rem' }}
-                control={
-                  <TextField
-                    id="image"
-                    name='image'
-                    type='file'
-                    size='small'
-                    style={{ marginLeft: 'auto', paddingLeft: '.5rem' }}
-                    slotProps={{ htmlInput: { accept: 'image/*' } }}
-                  />
-                }
-              />
-
-              <TextField
-                id='order'
-                name='order'
-                type='number'
-                label='Order'
-                size='small'
-                value={order || ''}
-                slotProps={{ htmlInput: { min: 1 } }}
-                required
-              />
-            </div>
+            <FormControlLabel
+              label="Image"
+              labelPlacement='start'
+              style={{ margin: 0, paddingLeft: '.5rem' }}
+              control={
+                <TextField
+                  id="image"
+                  name='image'
+                  type='file'
+                  size='small'
+                  style={{ marginLeft: 'auto', paddingLeft: '.5rem' }}
+                  slotProps={{ htmlInput: { accept: 'image/*' } }}
+                />
+              }
+            />
           </div>
 
           <div className="buttons-bar">
