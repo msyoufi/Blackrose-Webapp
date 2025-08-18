@@ -12,8 +12,16 @@
   transition: .1s;
 }
 
-.perfume-item.out-of-stock {
-  border-color: #d428426c;
+.order-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: .5rem;
+  background-color: rgb(235, 235, 235);
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
 }
 
 .image-box {

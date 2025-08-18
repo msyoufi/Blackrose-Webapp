@@ -5,6 +5,7 @@ import { useAuth } from "./shared/context/auth.provider";
 import { CircularProgress } from "@mui/material";
 import AdminLogin from "./pages/admin-login/admin-login";
 import { PerfumesProvider } from "./shared/context/perfumes.provider";
+import { PerfumeOrderFormProvider } from "./pages/perfumes/perfume-item/perfume_order_form";
 
 export default function App() {
   const { user, loading } = useAuth();
@@ -19,15 +20,17 @@ export default function App() {
 
   return (
     <PerfumesProvider>
-      <PerfumeFormProvider>
+      <PerfumeOrderFormProvider>
+        <PerfumeFormProvider>
 
-        <Header />
+          <Header />
 
-        <main>
-          <Outlet />
-        </main>
+          <main>
+            <Outlet />
+          </main>
 
-      </PerfumeFormProvider>
+        </PerfumeFormProvider>
+      </PerfumeOrderFormProvider>
     </PerfumesProvider>
   );
 }

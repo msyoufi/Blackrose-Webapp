@@ -7,16 +7,18 @@ import { usePerfumeForm } from '../perfume-form/perfume_form';
 import { deleteImage, uploadImage } from '../../../shared/services/images.storage.service';
 import { formatCurrency } from '../../../shared/utils/utils';
 import { downloadFileFromUrl, findImageUrl } from '../../../shared/services/image.search.service';
+import { usePerfumeOrderForm } from './perfume_order_form';
 import './perfume-item.scss';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
-  const { id, brand, name, sex, size, price, concentration, image_url } = perfume;
+  const { id, brand, name, sex, size, price, concentration, image_url, order } = perfume;
   const [searching, setSearching] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [loadingImg, setLoadingImg] = useState(true);
 
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
+  const perfumeOrderForm = usePerfumeOrderForm();
   const snackbar = useSnackbar();
 
   async function handleRemove(): Promise<void> {
@@ -104,6 +106,13 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
 
   return (
     <div className='perfume-item'>
+      <button
+        className='order-button'
+        onClick={() => perfumeOrderForm.open(id, order)}
+      >
+        {order}
+      </button>
+
       {image_url
         ? <div className='image-box'>
           <img className='perfume-image'
