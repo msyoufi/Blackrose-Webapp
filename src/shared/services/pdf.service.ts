@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { downloadImage } from './images.storage.service';
-import { formatCurrency, sortByKey } from '../utils/utils';
+import { formatCurrency } from '../utils/utils';
 
 // The image_url property of the passed perfumes must be a Data URL and NOT a download URL!!!!
 // Use the methode bellow 'downloadAllImagesAsDataUrl' to download the images first.
@@ -104,7 +104,7 @@ function writePerfumes(
   let x = margin;
   let xtext = 9;
   let y = margin;
-  let ytext = margin * 4;
+  let ytext = margin * 3.5;
 
   // create a default image in case perfume image is not provided
   const defaultImage = new Image();
@@ -113,7 +113,7 @@ function writePerfumes(
   const lastIndex = perfumes.length - 1;
 
   perfumes.forEach((perfume, i) => {
-    const { name, brand, size, price, image_url } = perfume;
+    const { name, brand, size, price, concentration, image_url } = perfume;
 
     if (image_url) {
       const { width: imgWidth, height: imgHeight, fileType } = doc.getImageProperties(image_url);
@@ -133,11 +133,13 @@ function writePerfumes(
     const nameLines = doc.splitTextToSize(name, itemWidth - 9);
     doc.text(nameLines, xtext, ytext);
 
-    doc.setFontSize(10);
-    doc.text(brand, xtext, ytext + nameLines.length + .5);
+    // do not add the height of the first line (length is at least 1)
+    ytext += nameLines.length - 1;
 
     doc.setFontSize(10);
-    doc.text(`${size} ml - ${formatCurrency(price)} UGX`, xtext, ytext + 4);
+    doc.text(brand, xtext, ytext + 1.5);
+    doc.text(concentration, xtext, ytext + 3.75);
+    doc.text(`${size} ml - ${formatCurrency(price)} UGX`, xtext, ytext + 5);
 
     // draw a border
     doc.setLineWidth(0.05)
@@ -151,7 +153,7 @@ function writePerfumes(
     if (y + itemHeight > pageHeight && i < lastIndex) {
       doc.addPage();
       y = margin;
-      ytext = margin * 4;
+      ytext = margin * 3.5;
     }
   });
 }
