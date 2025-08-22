@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useConfirmationDialog } from '../../../shared/components/confirmation-dialog';
-import { deletePerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
+import { deletePerfume, reorderPerfumes, updatePerfume, updatePerfumesOrder } from '../../../shared/services/perfume.db.service';
 import { useSnackbar } from '../../../shared/components/snackbar';
 import { Button, CircularProgress } from '@mui/material';
 import { usePerfumeForm } from '../perfume-form/perfume_form';
@@ -9,12 +9,14 @@ import { formatCurrency } from '../../../shared/utils/utils';
 import { downloadFileFromUrl, findImageUrl } from '../../../shared/services/image.search.service';
 import { usePerfumeOrderForm } from './perfume_order_form';
 import './perfume-item.scss';
+import { usePerfumes } from '../../../shared/context/perfumes.provider';
 
 export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
-  const { id, brand, name, sex, size, price, concentration, image_url, order } = perfume;
+  const { id, brand, name, sex, size, price, concentration, collection, image_url, order } = perfume;
   const [searching, setSearching] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [loadingImg, setLoadingImg] = useState(true);
+  const [allPerfumes] = usePerfumes();
 
   const confirmDialog = useConfirmationDialog();
   const perfumeForm = usePerfumeForm();
@@ -35,6 +37,14 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
     try {
       if (image_url)
         await deleteImage(id);
+
+      // Reorder perfumes if deleted perfume is not the last one
+      const lastOrder = allPerfumes.filter(p => p.collection === collection).length;
+
+      if (order !== lastOrder) {
+        const orderedPerfumes = reorderPerfumes(allPerfumes, perfume, order, true);
+        await updatePerfumesOrder(orderedPerfumes);
+      }
 
       await deletePerfume(id);
 
