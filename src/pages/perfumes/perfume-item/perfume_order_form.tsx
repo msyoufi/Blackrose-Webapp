@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useMemo, useRef, useState, type
 import { Button, CircularProgress, TextField } from "@mui/material";
 import { usePerfumes } from "../../../shared/context/perfumes.provider";
 import { useSnackbar } from "../../../shared/components/snackbar";
-import { updatePerfumesOrder } from "../../../shared/services/perfume.db.service";
+import { reorderPerfumes, updatePerfumesOrder } from "../../../shared/services/perfume.db.service";
 
 const PerfumeOrderFormContext = createContext<PerfumeOrderFormContext | null>(null);
 
@@ -33,11 +33,13 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
+    if (!perfume) return;
+
     setIsLoading(true);
 
     try {
-      const reordered = reorder();
-      await updatePerfumesOrder(reordered);
+      const orderedPerfumes = reorderPerfumes(allPerfumes, perfume, order);
+      await updatePerfumesOrder(orderedPerfumes);
 
       snackbar.show('New Order Saved');
       close();
@@ -48,26 +50,6 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
     } finally {
       setIsLoading(false);
     }
-  }
-
-  // Orders the perfume each in its own collection
-  function reorder(): Perfume[] {
-    if (!perfume) throw new Error('Perfume not found');
-
-    const { id, collection } = perfume;
-
-    const collectionPerfumes = allPerfumes.filter(p => p.collection === collection);
-
-    const currIndex = collectionPerfumes.findIndex(p => p.id === id);
-    if (currIndex < 0) throw new Error('Perfume not found');
-
-    // clamp newIndex
-    const newIndex = Math.max(0, Math.min(order - 1, collectionPerfumes.length));
-
-    const [moved] = collectionPerfumes.splice(currIndex, 1);
-    collectionPerfumes.splice(newIndex, 0, moved);
-
-    return collectionPerfumes;
   }
 
   const open = useCallback((perfume: Perfume) => {
