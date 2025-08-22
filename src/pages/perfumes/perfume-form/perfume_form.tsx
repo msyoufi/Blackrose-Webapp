@@ -4,6 +4,7 @@ import { useSnackbar } from '../../../shared/components/snackbar';
 import { FragranceConcentrations, PerfumeCollection, PerfumeSex } from '../../../shared/data/perfumes.data';
 import { createPerfume, updatePerfume } from '../../../shared/services/perfume.db.service';
 import { uploadImage } from '../../../shared/services/images.storage.service';
+import { usePerfumes } from '../../../shared/context/perfumes.provider';
 import './perfume_form.scss';
 
 const PerfumeFormContext = createContext<PerfumeFormContext | null>(null);
@@ -21,6 +22,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formValid, setFormValid] = useState(false);
+  const [allPerfumes] = usePerfumes();
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const snackbar = useSnackbar();
@@ -73,6 +75,7 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       }
 
       if (formMode === 'add') {
+        formData.order = allPerfumes.filter(p => p.collection === formData.collection).length + 1;
         await createPerfume(perfumeId, formData as NewPerfume);
         message = 'New perfume added';
 
