@@ -20,7 +20,7 @@ export default function CreatePDFButton({ perfumes }: { perfumes: Perfume[] }) {
       perfumes = perfumes.filter(p => p.collection === collection);
 
     if (sex !== 'All')
-      perfumes = perfumes.filter(p => p.sex === sex);
+      perfumes = perfumes.filter(p => p.sex === 'Unisex' || p.sex === sex);
 
     if (!perfumes.length) {
       return snackbar.show(`${collection} collection for ${sex} is empty`, 'warning');

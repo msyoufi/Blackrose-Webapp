@@ -30,7 +30,7 @@ export default function PerfumesGrid() {
     // handle sex selection
     const sexFiltered = sex === 'All'
       ? collectionPerfumes
-      : collectionPerfumes.filter(p => p.sex === sex);
+      : collectionPerfumes.filter(p => p.sex === 'Unisex' || p.sex === sex);
 
     // handle search query
     const foundPerfumes = searchValue === ''
