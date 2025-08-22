@@ -42,23 +42,27 @@ function writeCoverPage(
   const logoWidth = 9
   doc.addImage(logo, 'JPG', (pageWidth - logoWidth) / 2, 3, logoWidth, logoWidth);
 
+  // set moto
+  doc.setFontSize(5);
+  doc.text('LUXURY PERFUMES FOR LUXURIOUS PEOPLE', center, 10.75, { align: 'center' });
+
   // set collection
-  doc.setFontSize(14);
+  doc.setFontSize(10);
   let title = collection + ' Perfumes';
   if (collection === 'Private')
     title = title.replace(' ', ' Collection ');
-  doc.text(title, center, 14, { align: 'center' });
+  doc.text(title.toUpperCase(), center, 14, { align: 'center' });
 
   // set sex
   if (sex !== 'All') {
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text(sex, center, 15.5, { align: 'center' });
   }
 
   // set contact infos
-  doc.setFontSize(10);
+  doc.setFontSize(8);
   const x = 8;
-  const y = 17;
+  const y = 18;
 
   const locationLogo = document.createElement('img');
   locationLogo.src = 'images/location-icon.png';
