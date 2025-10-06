@@ -173,18 +173,16 @@ function writePerfumes(
 export async function downloadAllImagesAsDataUrl(perfumes: Perfume[]): Promise<Perfume[]> {
   let blob: Blob | null = null;
 
-  return await Promise.all(
-    perfumes.map(
-      async ({ image_url, ...perfume }) => {
-        if (image_url) {
-          blob = await downloadImage(perfume.id);
-          image_url = await blobToDataUrl(blob);
-        }
+  const downloadPromises = perfumes.map(async ({ image_url, ...perfume }) => {
+    if (image_url) {
+      blob = await downloadImage(perfume.id);
+      image_url = await blobToDataUrl(blob);
+    }
 
-        return { ...perfume, image_url };
-      }
-    )
-  );
+    return { ...perfume, image_url };
+  });
+
+  return Promise.all(downloadPromises);
 }
 
 function blobToDataUrl(image: Blob): Promise<string> {
