@@ -36,9 +36,8 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
     if (type === 'number') {
       value = Number.isNaN(valueAsNumber) ? '' : valueAsNumber;
-    }
 
-    if (type === 'file') {
+    } else if (type === 'file') {
       const file = getImageFile(e);
       return setImgFile(file);
     }
