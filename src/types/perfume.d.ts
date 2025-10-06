@@ -15,7 +15,7 @@ interface Perfume {
 
 type PerfumeSex = 'Men' | 'Women' | 'Unisex';
 
-type PerfumeCollection = 'Designer' | 'Arabic' | 'Private';
+type PerfumeCollection = 'Designer' | 'Arabic' | 'Private' | 'Niche';
 
 type FragranceConcentration =
   ''
