@@ -17,7 +17,7 @@
   top: 0;
   right: 0;
   padding: .5rem;
-  background-color: rgb(235, 235, 235);
+  background-color: #ebebeb;
   font-weight: 600;
   border-radius: var(--radius);
   border: none;
@@ -63,6 +63,10 @@
   flex-direction: column;
   justify-content: center;
   row-gap: .75rem;
+
+  .gray {
+    color: #7c7c7c;
+  }
 }
 
 .perfume-buttons-box {

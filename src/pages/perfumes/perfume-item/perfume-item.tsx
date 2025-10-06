@@ -150,7 +150,7 @@ export default function PerfumeItem({ perfume }: { perfume: Perfume }) {
       }
 
       <div className="perfume-infos-box">
-        <p>ID: {id}</p>
+        <p className="gray">ID: {id}</p>
         <p>{name} - {brand}</p>
         <p>{concentration} - {sex}</p>
         <p>{size} ml | {formatCurrency(price)} UGX</p>
