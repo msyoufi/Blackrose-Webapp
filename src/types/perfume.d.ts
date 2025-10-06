@@ -21,6 +21,7 @@ type FragranceConcentration =
   ''
   | 'Eau de Toilette'
   | 'Eau de Parfum'
+  | 'Extrait de Parfum'
   | 'Parfum'
   | 'Intense'
   | 'Elixir'
