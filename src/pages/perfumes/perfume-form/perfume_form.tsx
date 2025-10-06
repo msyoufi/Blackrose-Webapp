@@ -75,11 +75,11 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
     try {
       if (imgFile) {
-        formData.image_url = await uploadImage(imgFile, perfumeId);
+        trimedValues.image_url = await uploadImage(imgFile, perfumeId);
       }
 
       if (formMode === 'add') {
-        formData.order = allPerfumes.filter(p => p.collection === formData.collection).length + 1;
+        trimedValues.order = allPerfumes.filter(p => p.collection === trimedValues.collection).length + 1;
         await createPerfume(perfumeId, trimedValues as NewPerfume);
         message = 'New perfume added';
 
