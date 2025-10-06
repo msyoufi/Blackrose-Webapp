@@ -39,7 +39,10 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
     } else if (type === 'file') {
       const file = getImageFile(e);
-      return setImgFile(file);
+      setImgFile(file);
+      
+      setFormValid(formRef.current?.checkValidity() ?? false);
+      return;
     }
 
     setFormValid(formRef.current?.checkValidity() ?? false);
