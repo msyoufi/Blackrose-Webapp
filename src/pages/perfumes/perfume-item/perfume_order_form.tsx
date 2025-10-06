@@ -102,7 +102,7 @@ export function PerfumeOrderFormProvider({ children }: { children: ReactNode }) 
               }
             }}
             onChange={handleChange}
-            required
+            required autoFocus
           />
 
           <div className="buttons-bar">
