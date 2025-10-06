@@ -117,7 +117,7 @@ function writePerfumes(
   const lastIndex = perfumes.length - 1;
 
   perfumes.forEach((perfume, i) => {
-    const { name, brand, size, price, concentration, image_url } = perfume;
+    const { name, brand, sex, size, price, concentration, collection, inspired_by, image_url } = perfume;
 
     if (image_url) {
       const { width: imgWidth, height: imgHeight, fileType } = doc.getImageProperties(image_url);
@@ -140,10 +140,18 @@ function writePerfumes(
     // do not add the height of the first line (length is at least 1)
     ytext += nameLines.length - 1;
 
-    doc.setFontSize(10);
-    doc.text(brand, xtext, ytext + 1.5);
-    doc.text(concentration, xtext, ytext + 3.75);
-    doc.text(`${size} ml - ${formatCurrency(price)} UGX`, xtext, ytext + 5);
+    doc.setFontSize(9);
+    doc.text(brand, xtext, ytext + 1.2);
+
+    if (collection === 'Private') {
+      doc.setFontSize(8);
+      const inspiredLine = inspired_by ? `Inspired By ${inspired_by}` : 'Original';
+      doc.text(inspiredLine, xtext, ytext + 2.2);
+    }
+
+    doc.setFontSize(9);
+    doc.text(`${concentration} - ${sex}`, xtext, ytext + 4);
+    doc.text(`${size} ml - ${formatCurrency(price)} UGX`, xtext, ytext + 5.25);
 
     // draw a border
     doc.setLineWidth(0.05)
