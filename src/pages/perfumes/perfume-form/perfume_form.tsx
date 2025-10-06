@@ -66,6 +66,8 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
       ? new Date().getTime().toString()
       : formData.id as string;
 
+    const trimedValues = trimStrings(formData);
+
     setIsLoading(true);
 
     try {
@@ -75,11 +77,11 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
 
       if (formMode === 'add') {
         formData.order = allPerfumes.filter(p => p.collection === formData.collection).length + 1;
-        await createPerfume(perfumeId, formData as NewPerfume);
+        await createPerfume(perfumeId, trimedValues as NewPerfume);
         message = 'New perfume added';
 
       } else {
-        await updatePerfume(formData as Perfume);
+        await updatePerfume(trimedValues as Perfume);
       }
 
       snackbar.show(message);
@@ -91,6 +93,15 @@ export function PerfumeFormProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function trimStrings(formData: Perfume | PerfumeFormData): Perfume | PerfumeFormData {
+    const entries = (Object.entries(formData) as [keyof PerfumeFormData, any][])
+      .map(([k, v]) =>
+        [k, typeof v === 'string' ? v.trim() : v]
+      );
+
+    return Object.fromEntries(entries);
   }
 
   const open = useCallback((perfume?: Perfume) => {
